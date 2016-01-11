@@ -12,7 +12,7 @@ RUN curl -L >spruce.tar.gz https://github.com/geofffranks/spruce/releases/downlo
   && mv spruce_${SPRUCE_VERSION}_linux_amd64/spruce /usr/bin/spruce \
   && rm -rf spruce.tar.gz spruce_${SPRUCE_VERSION}_linux_amd64
 
-# spuff
+# spiff
 RUN curl -L >spiff.zip https://github.com/cloudfoundry-incubator/spiff/releases/download/v1.0.5/spiff_linux_amd64.zip \
  && unzip spiff.zip -d /usr/bin \
  && rm spiff.zip
