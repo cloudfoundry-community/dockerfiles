@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install bzr -y
 
 RUN \
   mkdir -p /goroot /gopath && \
-  curl https://storage.googleapis.com/golang/go1.5.2.linux-amd64.tar.gz | \
+  curl https://storage.googleapis.com/golang/go1.5.3.linux-amd64.tar.gz | \
   tar xvzf - -C /goroot --strip-components=1
 
 # Set environment variables.

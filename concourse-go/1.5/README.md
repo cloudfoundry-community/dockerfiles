@@ -1,10 +1,10 @@
 starkandwayne/concourse-go:1.5
 ==============================
 
-Task Image for running Concourse Pipelines - Now With Go 1.5.2
+Task Image for running Concourse Pipelines - Now With Go 1.5.3
 
 This Docker image contains a set of utilities commonly used in
-Concourse pipelines, pre-installed, along with Go 1.5.2.
+Concourse pipelines, pre-installed, along with Go 1.5.3.
 
 The `$GOPATH` and `$GOROOT` environment variables will already be
 set for you (to `/gopath` and `/goroot`, respectively).  Likewise,
