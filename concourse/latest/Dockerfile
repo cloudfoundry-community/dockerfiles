@@ -26,3 +26,8 @@ RUN curl -L >cf-cli.tar.gz http://go-cli.s3-website-us-east-1.amazonaws.com/rele
   && tar -xzvf cf-cli.tar.gz \
   && mv cf /usr/bin/cf \
   && rm -f cf-cli.tar.gz
+
+# Docker  
+ADD https://get.docker.io/builds/Linux/x86_64/docker-latest /usr/local/bin/docker
+RUN chmod +x /usr/local/bin/docker
+
