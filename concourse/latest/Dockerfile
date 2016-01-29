@@ -3,6 +3,8 @@ FROM concourse/concourse-ci
 ENV SPRUCE_VERSION=0.13.0 \
     CF_CLI_VERSION=6.13.0
 
+ADD scripts/install_aws_cli.sh /opt/scripts/
+
 # base packages
 RUN apt-get install -yy curl
 
@@ -27,7 +29,5 @@ RUN curl -L >cf-cli.tar.gz http://go-cli.s3-website-us-east-1.amazonaws.com/rele
   && mv cf /usr/bin/cf \
   && rm -f cf-cli.tar.gz
 
-# Docker  
-ADD https://get.docker.io/builds/Linux/x86_64/docker-latest /usr/local/bin/docker
-RUN chmod +x /usr/local/bin/docker
-
+# Python + AWS CLI
+RUN /opt/scripts/install_aws_cli.sh
