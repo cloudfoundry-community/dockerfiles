@@ -1,0 +1,46 @@
+---
+groups:
+  - name: concourse-go
+    jobs:
+      - (( append ))
+      - 'build concourse-go:1.5'
+      - 'promote concourse-go:1.5'
+
+resources:
+  - name: 'concourse-go:1.5 @github'
+    .: (( inject meta.resources.dockerfiles ))
+    source:
+      paths:
+        - concourse-go/1.5/Dockerfile
+  - name: 'concourse-go:1.5-rc @dockerhub'
+    .: (( inject meta.resources.dockerhub ))
+    source:
+      repository: (( concat meta.dockerhub.account "/concourse-go" ))
+      tag: 1.5-rc
+  - name: 'concourse-go:1.5 @dockerhub'
+    .: (( inject meta.resources.dockerhub ))
+    source:
+      repository: (( concat meta.dockerhub.account "/concourse-go" ))
+      tag: 1.5
+
+jobs:
+  - name: 'build concourse-go:1.5'
+    public: true
+    plan:
+      - aggregate:
+        - { get: git, resource: 'concourse-go:1.5 @github',    trigger:  true }
+        - { get: img, resource: 'concourse:latest @dockerhub', trigger: true }
+      - put: 'concourse-go:1.5-rc @dockerhub'
+        params: { build: git/concourse-go/1.5 }
+  - name: 'promote concourse-go:1.5'
+    public: true
+    plan:
+      - get: rc
+        resource: 'concourse-go:1.5-rc @dockerhub'
+        passed: ['build concourse-go:1.5']
+      - put: 'concourse-go:1.5 @dockerhub'
+        params:
+          load_base:       rc
+          load_file:       rc/image
+          load_repository: (( concat meta.dockerhub.account "/concourse-go" ))
+          load_tag:        1.5-rc

@@ -1,0 +1,49 @@
+---
+groups:
+  - name: concourse
+    jobs:
+      - (( append ))
+      - 'build concourse:latest'
+      - 'promote concourse:latest'
+
+resources:
+  - name: 'concourse:latest @github'
+    .: (( inject meta.resources.dockerfiles ))
+    source:
+      paths:
+        - concourse/latest/Dockerfile
+        - concourse/latest/scripts/*
+
+  - name: 'concourse:latest-rc @dockerhub'
+    .: (( inject meta.resources.dockerhub ))
+    source:
+      repository: (( concat meta.dockerhub.account "/concourse" ))
+      tag: latest-rc
+  - name: 'concourse:latest @dockerhub'
+    .: (( inject meta.resources.dockerhub ))
+    source:
+      repository: (( concat meta.dockerhub.account "/concourse" ))
+      tag: latest
+
+jobs:
+  - name: 'build concourse:latest'
+    public: true
+    plan:
+      - get: git
+        resource: 'concourse:latest @github'
+        trigger:  true
+      - put: 'concourse:latest-rc @dockerhub'
+        params:
+          build: git/concourse/latest
+  - name: 'promote concourse:latest'
+    public: true
+    plan:
+      - get: rc
+        resource: 'concourse:latest-rc @dockerhub'
+        passed: ['build concourse:latest']
+      - put: 'concourse:latest @dockerhub'
+        params:
+          load_base:       rc
+          load_file:       rc/image
+          load_repository: (( concat meta.dockerhub.account "/concourse" ))
+          load_tag:        latest-rc

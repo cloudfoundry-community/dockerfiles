@@ -1,0 +1,29 @@
+---
+meta:
+  dockerhub:
+    account:  starkandwayne
+    email:    (( param "Please provide an email address for pushing to Dockerhub" ))
+    username: (( param "Please provide a username for pushing to Dockerhub" ))
+    password: (( param "Please provide a password for pushing to Dockerhub" ))
+
+  github:
+    key: (( param "Please provide a private key for the dockerfiles repository" ))
+
+  resources:
+    dockerfiles:
+      type: git
+      source:
+        uri: git@github.com:starkandwayne/dockerfiles
+        branch: master
+        private_key: (( grab meta.github.key ))
+
+    dockerhub:
+      type: docker-image
+      source:
+        email:    (( grab meta.dockerhub.email ))
+        username: (( grab meta.dockerhub.username ))
+        password: (( grab meta.dockerhub.password ))
+
+groups:
+  - name: concourse
+  - name: concourse-go

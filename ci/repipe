@@ -1,0 +1,37 @@
+#!/bin/bash
+if [[ -z ${1} ]]; then
+	echo >&2 "USAGE: $0 concourse-target"
+	exit 1
+fi
+concourse=${1}
+
+set -eu
+root=$(cd $(dirname $BASH_SOURCE[0])/..; pwd)
+
+if [[ -z $(command -v spruce 2>/dev/null) ]]; then
+	echo >&2 "spruce is missing!  Please install spruce from https://github.com/geofffranks/spruce"
+	exit 1
+fi
+
+if [[ ! -f ${root}/ci/credentials.yml ]]; then
+	echo >&2 "Looks like you are missing a ci/credentials.yml file in ${root} ..."
+	exit 1
+fi
+
+ifpresent() {
+	for file in "$@"; do
+		[ -f ${file} ] && echo ${file}
+	done
+}
+
+(cd ${root}/ci && \
+ spruce merge \
+        $(ifpresent pipeline.yml ../*/*/pipeline.yml)  \
+        credentials.yml \
+    > .full.yml) || exit 2
+(cd ${root}/ci && \
+ spruce merge --prune meta .full.yml \
+    > .live.yml) || exit 2
+
+set -x
+fly set-pipeline -p docker-images -c ${root}/ci/.live.yml -t ${concourse}
