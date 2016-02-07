@@ -25,3 +25,6 @@ RUN go get golang.org/x/tools/cmd/vet \
  && go get github.com/golang/lint/golint \
  && go get github.com/tools/godep \
  && go get github.com/laher/goxc
+
+# Pre-compile the goxc toolchain
+RUN GOROOT_BOOTSTRAP=$GOROOT goxc -bc="linux,!arm darwin,amd64" -t
