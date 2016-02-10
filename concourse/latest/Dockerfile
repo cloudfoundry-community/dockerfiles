@@ -1,6 +1,6 @@
 FROM concourse/concourse-ci
 
-ENV SPRUCE_VERSION=0.13.0 \
+ENV SPRUCE_VERSION=1.0.2 \
     CF_CLI_VERSION=6.13.0
 
 ADD scripts/install_aws_cli.sh /opt/scripts/
@@ -9,10 +9,8 @@ ADD scripts/install_aws_cli.sh /opt/scripts/
 RUN apt-get install -yy curl
 
 # spruce
-RUN curl -L >spruce.tar.gz https://github.com/geofffranks/spruce/releases/download/v${SPRUCE_VERSION}/spruce_${SPRUCE_VERSION}_linux_amd64.tar.gz \
-  && tar -xvzf spruce.tar.gz \
-  && mv spruce_${SPRUCE_VERSION}_linux_amd64/spruce /usr/bin/spruce \
-  && rm -rf spruce.tar.gz spruce_${SPRUCE_VERSION}_linux_amd64
+RUN curl -L >/usr/bin/spruce https://github.com/geofffranks/spruce/releases/download/v${SPRUCE_VERSION}/spruce-linux-amd64 \
+  && chmod 0755 /usr/bin/spruce
 
 # spiff
 RUN curl -L >spiff.zip https://github.com/cloudfoundry-incubator/spiff/releases/download/v1.0.5/spiff_linux_amd64.zip \
