@@ -26,8 +26,8 @@ jobs:
     public: true
     plan:
       - aggregate:
-        - { get: git, resource: 'concourse-go:1.4 @github',    trigger:  true }
-        - { get: img, resource: 'concourse:latest @dockerhub', trigger: true }
+        - { get: git, resource: 'concourse-go:1.4 @github',    trigger: true }
+        - { get: img, resource: 'concourse:latest @dockerhub', trigger: true, passed: ['promote concourse:latest'] }
       - put: 'concourse-go:1.4-rc @dockerhub'
         params: { build: git/concourse-go/1.4 }
   - name: 'promote concourse-go:1.4'
