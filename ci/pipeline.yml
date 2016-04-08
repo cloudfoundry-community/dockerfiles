@@ -27,3 +27,4 @@ meta:
 groups:
   - name: concourse
   - name: concourse-go
+  - name: concourse-java
