@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install bzr -y
 # go lang to /goroot
 
 RUN \
-  mkdir -p /goroot /gopath && \
+  mkdir -p /goroot /gopath /root/go && \
   curl https://storage.googleapis.com/golang/go1.6.2.linux-amd64.tar.gz | \
   tar xvzf - -C $HOME/go --strip-components=1
 
