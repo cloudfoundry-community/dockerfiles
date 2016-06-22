@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install bzr -y
 
 RUN \
   mkdir -p /goroot /gopath && \
-  curl https://storage.googleapis.com/golang/go1.4.2.linux-amd64.tar.gz | \
+  curl https://storage.googleapis.com/golang/go1.6.2.linux-amd64.tar.gz | \
   tar xvzf - -C /goroot --strip-components=1
 
 # Set environment variables.
@@ -20,8 +20,7 @@ ENV \
   PATH=/goroot/bin:/gopath/bin:$PATH
 
 # Useful go packages.
-RUN go get golang.org/cmd/vet \
- && go get golang.org/cmd/cover \
+RUN go get golang.org/cmd/cover \
  && go get github.com/golang/lint/golint \
  && go get github.com/tools/godep \
  && go get github.com/laher/goxc

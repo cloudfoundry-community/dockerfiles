@@ -1,44 +1,44 @@
 groups:
   - name: concourse-go
     jobs: 
-      - 'build concourse-go:1.4'
-      - 'promote concourse-go:1.4'
+      - 'build concourse-go:1.6'
+      - 'promote concourse-go:1.6'
 
 resources:
-  - name: 'concourse-go:1.4 @github'
+  - name: 'concourse-go:1.6 @github'
     .: (( inject meta.resources.dockerfiles ))
     source:
       paths:
-        - concourse-go/1.4/Dockerfile
-  - name: 'concourse-go:1.4-rc @dockerhub'
+        - concourse-go/1.6/Dockerfile
+  - name: 'concourse-go:1.6-rc @dockerhub'
     .: (( inject meta.resources.dockerhub ))
     source:
       repository: (( concat meta.dockerhub.account "/concourse-go" ))
-      tag: 1.4-rc
-  - name: 'concourse-go:1.4 @dockerhub'
+      tag: 1.6-rc
+  - name: 'concourse-go:1.6 @dockerhub'
     .: (( inject meta.resources.dockerhub ))
     source:
       repository: (( concat meta.dockerhub.account "/concourse-go" ))
-      tag: 1.4
+      tag: 1.6
 
 jobs:
-  - name: 'build concourse-go:1.4'
+  - name: 'build concourse-go:1.6'
     public: true
     plan:
       - aggregate:
-        - { get: git, resource: 'concourse-go:1.4 @github',    trigger: true }
+        - { get: git, resource: 'concourse-go:1.6 @github',    trigger: true }
         - { get: img, resource: 'concourse:latest @dockerhub', trigger: true, passed: ['promote concourse:latest'] }
-      - put: 'concourse-go:1.4-rc @dockerhub'
-        params: { build: git/concourse-go/1.4 }
-  - name: 'promote concourse-go:1.4'
+      - put: 'concourse-go:1.6-rc @dockerhub'
+        params: { build: git/concourse-go/1.6 }
+  - name: 'promote concourse-go:1.6'
     public: true
     plan:
       - get: rc
-        resource: 'concourse-go:1.4-rc @dockerhub'
-        passed: ['build concourse-go:1.4']
-      - put: 'concourse-go:1.4 @dockerhub'
+        resource: 'concourse-go:1.6-rc @dockerhub'
+        passed: ['build concourse-go:1.6']
+      - put: 'concourse-go:1.6 @dockerhub'
         params:
           load_base:       rc
           load_file:       rc/image
           load_repository: (( concat meta.dockerhub.account "/concourse-go" ))
-          load_tag:        1.4-rc
+          load_tag:        1.6-rc
