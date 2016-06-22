@@ -1,6 +1,7 @@
 groups:
   - name: concourse-go
-    jobs: 
+    jobs:
+      - (( append ))
       - 'build concourse-go:1.6'
       - 'promote concourse-go:1.6'
 
