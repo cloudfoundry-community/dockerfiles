@@ -20,8 +20,7 @@ ENV \
   PATH=/goroot/bin:/gopath/bin:$PATH
 
 # Useful go packages.
-RUN go get golang.org/cmd/cover \
- && go get github.com/golang/lint/golint \
+RUN go get github.com/golang/lint/golint \
  && go get github.com/tools/godep \
  && go get github.com/laher/goxc
 
