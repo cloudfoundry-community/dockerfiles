@@ -9,9 +9,9 @@ RUN apt-get update && apt-get install bzr -y
 # go lang to /goroot
 
 RUN \
-  mkdir -p /goroot /gopath /root/go && \
+  mkdir -p /goroot /gopath  && \
   curl https://storage.googleapis.com/golang/go1.6.2.linux-amd64.tar.gz | \
-  tar xvzf - -C $HOME/go --strip-components=1
+  tar xvzf - -C /goroot --strip-components=1
 
 # Set environment variables.
 ENV \
@@ -25,4 +25,4 @@ RUN go get github.com/golang/lint/golint \
  && go get github.com/laher/goxc
 
 # Pre-compile the goxc toolchain
-RUN GOROOT_BOOTSTRAP=$HOME/go goxc -bc="linux,!arm darwin,amd64" -t
+RUN goxc -bc="linux,!arm darwin,amd64" -t
