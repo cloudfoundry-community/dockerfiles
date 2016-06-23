@@ -15,7 +15,6 @@ RUN \
   tar xvzf - -C /goroot --strip-components=1 && \
   chown -R worker /goroot /gopath
 
-USER worker
 
 # Set environment variables.
 ENV \
