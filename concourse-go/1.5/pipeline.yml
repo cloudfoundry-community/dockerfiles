@@ -38,6 +38,7 @@ jobs:
       - get: rc
         resource: 'concourse-go:1.5-rc @dockerhub'
         passed: ['build concourse-go:1.5']
+        params: { save: true }
       - put: 'concourse-go:1.5 @dockerhub'
         params:
           load_base:       rc
