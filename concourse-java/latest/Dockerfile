@@ -1,6 +1,6 @@
 FROM concourse/concourse-ci
 
-ENV SPRUCE_VERSION=1.0.2 \
+ENV SPRUCE_VERSION=1.5.0 \
     CF_CLI_VERSION=6.13.0
 
 ADD scripts/install_aws_cli.sh /opt/scripts/
