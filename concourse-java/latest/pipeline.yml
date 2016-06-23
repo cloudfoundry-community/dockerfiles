@@ -41,6 +41,7 @@ jobs:
       - get: rc
         resource: 'concourse-java:latest-rc @dockerhub'
         passed: ['build concourse-java:latest']
+        params: { save: true }
       - put: 'concourse-java:latest @dockerhub'
         params:
           load_base:       rc
