@@ -33,4 +33,3 @@ RUN /opt/scripts/install_aws_cli.sh
 # Add a user for running things as non-superuser
 
 RUN useradd -ms /bin/bash worker
-USER worker
