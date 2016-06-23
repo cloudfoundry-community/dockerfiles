@@ -41,6 +41,7 @@ jobs:
       - get: rc
         resource: 'concourse:latest-rc @dockerhub'
         passed: ['build concourse:latest']
+        params: { save: true }
       - put: 'concourse:latest @dockerhub'
         params:
           load_base:       rc
