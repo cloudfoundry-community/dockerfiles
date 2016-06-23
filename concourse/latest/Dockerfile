@@ -29,3 +29,7 @@ RUN curl -L >cf-cli.tar.gz http://go-cli.s3-website-us-east-1.amazonaws.com/rele
 
 # Python + AWS CLI
 RUN /opt/scripts/install_aws_cli.sh
+
+# Add a user for running things as non-superuser
+
+RUN useradd -ms /bin/bash worker
