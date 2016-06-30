@@ -27,6 +27,11 @@ RUN curl -L >cf-cli.tar.gz http://go-cli.s3-website-us-east-1.amazonaws.com/rele
   && mv cf /usr/bin/cf \
   && rm -f cf-cli.tar.gz
 
+# vault
+RUN curl -L >vault.zip https://releases.hashicorp.com/vault/0.6.0/vault_0.6.0_linux_amd64.zip \
+  && unzip vault.zip -d /usr/bin \
+  && rm vault.zip
+
 # Python + AWS CLI
 RUN /opt/scripts/install_aws_cli.sh
 
