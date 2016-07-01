@@ -13,11 +13,6 @@ if [[ -z $(command -v spruce 2>/dev/null) ]]; then
 	exit 1
 fi
 
-if [[ ! -f ${root}/ci/credentials.yml ]]; then
-	echo >&2 "Looks like you are missing a ci/credentials.yml file in ${root} ..."
-	exit 1
-fi
-
 ifpresent() {
 	for file in "$@"; do
 		[ -f ${file} ] && echo ${file}
@@ -27,7 +22,6 @@ ifpresent() {
 (cd ${root}/ci && \
  spruce merge \
         $(ifpresent pipeline.yml ../*/*/pipeline.yml)  \
-        credentials.yml \
     > .full.yml) || exit 2
 (cd ${root}/ci && \
  spruce merge --prune meta .full.yml \
