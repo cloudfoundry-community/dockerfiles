@@ -25,6 +25,8 @@ meta:
         password: (( grab meta.dockerhub.password ))
 
 groups:
+  - name: '*'
+    jobs: (( grab groups.concourse.jobs groups.concourse-go.jobs groups.concourse-java.jobs ))
   - name: concourse
   - name: concourse-go
   - name: concourse-java
