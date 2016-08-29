@@ -2,7 +2,9 @@ FROM concourse/concourse-ci
 
 ENV SPRUCE_VERSION=1.5.0 \
     CF_CLI_VERSION=6.13.0 \
-    COLUMNS=80 # work around bosh cli needing a terminal size specified
+    COLUMNS=80
+
+# COLUMNS var added to work around bosh cli needing a terminal size specified
 
 ADD scripts/install_aws_cli.sh /opt/scripts/
 
