@@ -1,4 +1,4 @@
-FROM concourse/concourse
+FROM concourse/bosh-cli
 
 ENV SPRUCE_VERSION=1.5.0 \
     CF_CLI_VERSION=6.13.0 \
