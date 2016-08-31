@@ -9,7 +9,7 @@ ENV SPRUCE_VERSION=1.5.0 \
 ADD scripts/install_aws_cli.sh /opt/scripts/
 
 # base packages
-RUN apt-get install -yy curl file
+RUN apt-get install -yy curl file unzip
 
 # spruce
 RUN curl -L >/usr/bin/spruce https://github.com/geofffranks/spruce/releases/download/v${SPRUCE_VERSION}/spruce-linux-amd64 \
