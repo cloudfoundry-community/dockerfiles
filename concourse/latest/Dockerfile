@@ -11,7 +11,7 @@ ADD scripts/install_aws_cli.sh /opt/scripts/
 # base packages
 RUN apt-get update && \
     apt-get install -yy curl file unzip git ruby make && \
-    gem install bosh_cli \
+    gem install bosh_cli
 
 # spruce
 RUN curl -L >/usr/bin/spruce https://github.com/geofffranks/spruce/releases/download/v${SPRUCE_VERSION}/spruce-linux-amd64 \
