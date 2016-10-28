@@ -11,7 +11,7 @@ RUN apt-get update && apt-get install bzr -y
 
 RUN \
   mkdir -p /goroot /gopath  && \
-  curl https://storage.googleapis.com/golang/go1.6.2.linux-amd64.tar.gz | \
+  curl https://storage.googleapis.com/golang/go1.6.3.linux-amd64.tar.gz | \
   tar xvzf - -C /goroot --strip-components=1 && \
   chown -R worker /goroot /gopath
 
