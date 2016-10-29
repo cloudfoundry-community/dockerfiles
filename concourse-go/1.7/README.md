@@ -1,4 +1,4 @@
-starkandwayne/concourse-go:1.4
+starkandwayne/concourse-go:1.7
 ==============================
 
 Task Image for running Concourse Pipelines - Now With Go 1.7!
