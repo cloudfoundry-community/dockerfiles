@@ -41,7 +41,4 @@ jobs:
         params: { save: true }
       - put: 'concourse-go:1.6 @dockerhub'
         params:
-          load_base:       rc
-          load_file:       rc/image
-          load_repository: (( concat meta.dockerhub.account "/concourse-go" ))
-          load_tag:        1.6-rc
+          load: rc
