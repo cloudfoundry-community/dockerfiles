@@ -2,11 +2,11 @@ FROM starkandwayne/concourse
 # https://github.com/starkandwayne/dockerfiles/blob/master/concourse/Dockerfile
 
 USER root
-RUN apt-get update && apt-get install bzr -y
+RUN apt-get update && apt-get install bzr gcc -y
 
 # Install Go
 # mkdir -p /goroot will create goroot dir under the root in the docker
-# curl url will output to stand out, with | to direct it to tar, which will extract the precompliled 
+# curl url will output to stand out, with | to direct it to tar, which will extract the precompliled
 # go lang to /goroot
 
 RUN \
