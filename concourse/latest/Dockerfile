@@ -39,7 +39,7 @@ RUN curl -L >vault.zip https://releases.hashicorp.com/vault/0.6.0/vault_0.6.0_li
   && rm vault.zip
 
 # safe
-RUN curl -L >/usr/bin/safe https://github.com/geofffranks/safe/releases/download/v${SAFE_VERSION}/safe-linux-amd64 \
+RUN curl -L >/usr/bin/safe https://github.com/starkandwayne/safe/releases/download/v${SAFE_VERSION}/safe-linux-amd64 \
   && chmod 0755 /usr/bin/safe
 
 # Python + AWS CLI
