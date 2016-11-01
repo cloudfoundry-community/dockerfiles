@@ -1,6 +1,7 @@
 FROM ubuntu
 
 ENV SPRUCE_VERSION=1.8.1 \
+    SAFE_VERSION=0.0.26 \
     CF_CLI_VERSION=6.13.0 \
     COLUMNS=80
 
@@ -36,6 +37,10 @@ RUN curl -L >cf-cli.tar.gz http://go-cli.s3-website-us-east-1.amazonaws.com/rele
 RUN curl -L >vault.zip https://releases.hashicorp.com/vault/0.6.0/vault_0.6.0_linux_amd64.zip \
   && unzip vault.zip -d /usr/bin \
   && rm vault.zip
+
+# safe
+RUN curl -L >/usr/bin/safe https://github.com/geofffranks/safe/releases/download/v${SAFE_VERSION}/safe-linux-amd64 \
+  && chmod 0755 /usr/bin/safe
 
 # Python + AWS CLI
 RUN /opt/scripts/install_aws_cli.sh
