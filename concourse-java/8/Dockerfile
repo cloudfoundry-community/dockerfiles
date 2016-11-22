@@ -1,4 +1,4 @@
-FROM starkandwayne/concourse
+FROM openjdk:8
 
 # base packages
-RUN apt-get install -yy curl file openjdk-8-jdk
+RUN apt-get install -yy git curl file
