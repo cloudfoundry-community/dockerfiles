@@ -3,6 +3,7 @@ FROM ubuntu
 ENV SPRUCE_VERSION=1.8.1 \
     SAFE_VERSION=0.0.26 \
     CF_CLI_VERSION=6.13.0 \
+    GENESIS_VERSION=1.6.0 \
     COLUMNS=80
 
 # COLUMNS var added to work around bosh cli needing a terminal size specified
@@ -41,6 +42,16 @@ RUN curl -L >vault.zip https://releases.hashicorp.com/vault/0.6.0/vault_0.6.0_li
 # safe
 RUN curl -L >/usr/bin/safe https://github.com/starkandwayne/safe/releases/download/v${SAFE_VERSION}/safe-linux-amd64 \
   && chmod 0755 /usr/bin/safe
+
+#certstrap
+RUN curl -LSs -o /usr/bin/certstrap \
+  https://raw.githubusercontent.com/starkandwayne/jumpbox/master/bin/certstrap \
+  && chmod 0755 /usr/bin/certstrap
+
+#genesis
+RUN curl -L -o /usr/bin/genesis \
+  "https://github.com/starkandwayne/genesis/releases/download/v${GENESIS_VERSION}/genesis" \
+  && chmod 0755 /usr/bin/genesis
 
 # Python + AWS CLI
 RUN /opt/scripts/install_aws_cli.sh
