@@ -48,11 +48,6 @@ RUN curl -LSs -o /usr/bin/certstrap \
   https://raw.githubusercontent.com/starkandwayne/jumpbox/master/bin/certstrap \
   && chmod 0755 /usr/bin/certstrap
 
-#genesis
-RUN curl -L -o /usr/bin/genesis \
-  "https://github.com/starkandwayne/genesis/releases/download/v${GENESIS_VERSION}/genesis" \
-  && chmod 0755 /usr/bin/genesis
-
 # Python + AWS CLI
 RUN /opt/scripts/install_aws_cli.sh
 
