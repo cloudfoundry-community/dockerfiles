@@ -44,7 +44,4 @@ jobs:
         params: { save: true }
       - put: 'concourse-java:8 @dockerhub'
         params:
-          load_base:       rc
-          load_file:       rc/image
-          load_repository: (( concat meta.dockerhub.account "/concourse-java" ))
-          load_tag:        8-rc
+          load:        rc
