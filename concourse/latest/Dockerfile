@@ -12,7 +12,7 @@ ADD scripts/install_aws_cli.sh /opt/scripts/
 
 # base packages
 RUN apt-get update && \
-    apt-get install -yy curl file unzip git ruby make && \
+    apt-get install -yy curl file unzip git ruby make bzip2 && \
     gem install bosh_cli
 
 # spruce
