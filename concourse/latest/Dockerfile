@@ -1,8 +1,9 @@
 FROM ubuntu
 
 ENV SPRUCE_VERSION=1.8.10 \
-    SAFE_VERSION=0.0.29 \
+    SAFE_VERSION=0.1.5 \
     CF_CLI_VERSION=6.13.0 \
+    BOSH2_VERSION=2.0.1 \
     GENESIS_VERSION=1.6.0 \
     COLUMNS=80
 
@@ -14,6 +15,10 @@ ADD scripts/install_aws_cli.sh /opt/scripts/
 RUN apt-get update && \
     apt-get install -yy curl file unzip git ruby make bzip2 && \
     gem install bosh_cli
+
+# bosh2
+RUN curl -L >/usr/bin/bosh2 https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli-${BOSH2_VERSION}-linux-amd64 \
+  && chmod 0755 /usr/bin/bosh2
 
 # spruce
 RUN curl -L >/usr/bin/spruce https://github.com/geofffranks/spruce/releases/download/v${SPRUCE_VERSION}/spruce-linux-amd64 \
