@@ -34,7 +34,7 @@ RUN curl -L >/usr/bin/jq http://stedolan.github.io/jq/download/linux64/jq \
   && chmod 755 /usr/bin/jq
 
 # cf-cli
-RUN curl -L >cf-cli.tar.gz http://go-cli.s3-website-us-east-1.amazonaws.com/releases/v${CF_CLI_VERSION}/cf-linux-amd64.tgz \
+RUN curl -L >cf-cli.tar.gz https://s3-us-west-1.amazonaws.com/cf-cli-releases/releases/v${CF_CLI_VERSION}/cf-cli_${CF_CLI_VERSION}_linux_x86-64.tgz \
   && tar -xzvf cf-cli.tar.gz \
   && mv cf /usr/bin/cf \
   && rm -f cf-cli.tar.gz
