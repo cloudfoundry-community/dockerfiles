@@ -5,6 +5,7 @@ ENV SPRUCE_VERSION=1.9.0 \
     CF_CLI_VERSION=6.26.0 \
     BOSH2_VERSION=2.0.17 \
     GENESIS_VERSION=1.6.0 \
+    FLY_VERSION=2.7.3 \
     COLUMNS=80
 
 # COLUMNS var added to work around bosh cli needing a terminal size specified
@@ -47,6 +48,10 @@ RUN curl -L >vault.zip https://releases.hashicorp.com/vault/0.6.0/vault_0.6.0_li
 # safe
 RUN curl -L >/usr/bin/safe https://github.com/starkandwayne/safe/releases/download/v${SAFE_VERSION}/safe-linux-amd64 \
   && chmod 0755 /usr/bin/safe
+
+# fly
+RUN curl -L >/usr/bin/fly https://github.com/concourse/concourse/releases/download/v${FLY_VERSION}/fly_linux_amd64 \
+  && chmod 0755 /usr/bin/fly
 
 #certstrap
 RUN curl -LSs -o /usr/bin/certstrap \
