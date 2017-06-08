@@ -31,7 +31,7 @@ RUN curl -L >spiff.zip https://github.com/cloudfoundry-incubator/spiff/releases/
  && rm spiff.zip
 
 # jq
-RUN curl -L >/usr/bin/jq http://stedolan.github.io/jq/download/linux64/jq \
+RUN curl -L >/usr/bin/jq https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 \
   && chmod 755 /usr/bin/jq
 
 # cf-cli
