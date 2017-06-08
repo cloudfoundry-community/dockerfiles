@@ -17,6 +17,10 @@ RUN apt-get update && \
     apt-get install -yy curl file unzip git ruby make bzip2 && \
     gem install bosh_cli
 
+# bosh-init/create-env deps
+RUN apt-get update && \
+    apt-get install -yy build-essential zlibc zlib1g-dev ruby-dev openssl libxslt-dev libxml2-dev libssl-dev libreadline6 libreadline6-dev libyaml-dev libsqlite3-dev sqlite3
+
 # bosh2
 RUN curl -L >/usr/bin/bosh2 https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli-${BOSH2_VERSION}-linux-amd64 \
   && chmod 0755 /usr/bin/bosh2
