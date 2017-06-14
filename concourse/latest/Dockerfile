@@ -44,6 +44,9 @@ RUN curl -L >cf-cli.tar.gz https://s3-us-west-1.amazonaws.com/cf-cli-releases/re
   && mv cf /usr/bin/cf \
   && rm -f cf-cli.tar.gz
 
+# cf-uaac
+RUN gem install cf-uaac
+
 # vault
 RUN curl -L >vault.zip https://releases.hashicorp.com/vault/0.6.0/vault_0.6.0_linux_amd64.zip \
   && unzip vault.zip -d /usr/bin \
