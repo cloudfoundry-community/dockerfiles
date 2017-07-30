@@ -68,6 +68,9 @@ RUN curl -LSs -o /usr/bin/certstrap \
 # Python + AWS CLI
 RUN /opt/scripts/install_aws_cli.sh
 
+# Required to build + release .deb
+RUN gem install fpm deb-s3 --no-ri --no-rdoc
+
 # Add a user for running things as non-superuser
 
 RUN useradd -ms /bin/bash worker
