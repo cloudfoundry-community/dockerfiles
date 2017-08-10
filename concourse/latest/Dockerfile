@@ -8,8 +8,7 @@ ADD scripts/install_aws_cli.sh /opt/scripts/
 
 # base packages
 RUN apt-get update && \
-    apt-get install -yy wget curl file unzip git ruby make bzip2 && \
-    gem install bosh_cli cf-uaac fpm deb-s3 --no-ri --no-rdoc
+    apt-get install -yy wget curl file unzip git ruby make bzip2
 
 # packages from https://apt.starkandwayne.com/
 RUN wget -q -O - https://raw.githubusercontent.com/starkandwayne/homebrew-cf/master/public.key | apt-key add -
@@ -44,6 +43,9 @@ RUN curl -L >spiff.zip https://github.com/cloudfoundry-incubator/spiff/releases/
 # Python + AWS CLI
 RUN /opt/scripts/install_aws_cli.sh
 
+# Rubygems
+RUN gem install bosh_cli cf-uaac fpm deb-s3 --no-ri --no-rdoc
+    
 # Add a user for running things as non-superuser
 
 RUN useradd -ms /bin/bash worker
