@@ -1,12 +1,6 @@
 FROM ubuntu
 
-ENV SPRUCE_VERSION=1.11.0 \
-    SAFE_VERSION=0.1.8 \
-    CF_CLI_VERSION=6.26.0 \
-    BOSH2_VERSION=2.0.17 \
-    GENESIS_VERSION=1.6.0 \
-    FLY_VERSION=2.7.3 \
-    COLUMNS=80
+ENV COLUMNS=80
 
 # COLUMNS var added to work around bosh cli needing a terminal size specified
 
