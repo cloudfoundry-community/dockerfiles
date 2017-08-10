@@ -14,22 +14,22 @@ RUN apt-get update && \
 RUN wget -q -O - https://raw.githubusercontent.com/starkandwayne/homebrew-cf/master/public.key | apt-key add -
 RUN echo "deb http://apt.starkandwayne.com stable main" | tee /etc/apt/sources.list.d/starkandwayne.list
 RUN apt-get update && apt-get install -y \
-     spruce \
-  && safe \
-  && bosh-cli \
-  && vault \
-  && genesis \
-  && gotcha \
-  && shield \
-  && certstrap \
-  && credhub-cli \
-  && cf-cli \
-  && jq \
-  && sipcalc \
-  && concourse-fly \
-  && concourse \
-  && om \
-  && pivnet-cli
+      spruce \
+      safe \
+      bosh-cli \
+      vault \
+      genesis \
+      gotcha \
+      shield \
+      certstrap \
+      credhub-cli \
+      cf-cli \
+      jq \
+      sipcalc \
+      concourse-fly \
+      concourse \
+      om \
+      pivnet-cli
 
 # bosh-init/create-env deps
 RUN apt-get update && \
