@@ -42,3 +42,4 @@ jobs:
       - put: 'concourse-go:1.9 @dockerhub'
         params:
           load: rc
+          tag_as_latest: true
