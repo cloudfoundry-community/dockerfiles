@@ -32,7 +32,7 @@ RUN apt-get update && apt-get install -y \
       pivnet-cli
       
 # safe uses xxd in tests
-RUN apt-get update && apt-get install -y xxd
+RUN apt-get update && apt-get install -y vim-common
 
 # bosh-init/create-env deps
 RUN apt-get update && \
