@@ -30,6 +30,9 @@ RUN apt-get update && apt-get install -y \
       concourse \
       om \
       pivnet-cli
+      
+# safe uses xxd in tests
+RUN apt-get install -y xxd
 
 # bosh-init/create-env deps
 RUN apt-get update && \
