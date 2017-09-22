@@ -29,7 +29,8 @@ RUN apt-get update && apt-get install -y \
       concourse-fly \
       concourse \
       om \
-      pivnet-cli
+      pivnet-cli \
+      hub
       
 # safe uses xxd in tests
 RUN apt-get update && apt-get install -y vim-common
