@@ -13,6 +13,10 @@ ENV RUBY_DOWNLOAD_SHA256 748a8980d30141bd1a4124e11745bb105b436fb1890826e0d2b9ea3
 ENV RUBYGEMS_VERSION 2.6.14
 ENV BUNDLER_VERSION 1.15.4
 
+# Need gcc for subsequent gem installations
+RUN apt-get update \
+  && apt-get install -y build-essential
+
 # some of ruby's build scripts are written in ruby
 #   we purge system ruby later to make sure our final image uses what we just built
 RUN set -ex \
