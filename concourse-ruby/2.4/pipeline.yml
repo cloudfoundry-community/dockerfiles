@@ -34,7 +34,7 @@ jobs:
         - { get: img, resource: 'concourse:latest @dockerhub', trigger: true, passed: ['promote concourse:latest'] }
       - put: 'concourse-ruby:2.4-rc @dockerhub'
         params:
-          build: git/concourse-ruby/8
+          build: git/concourse-ruby/2.4
   - name: 'promote concourse-ruby:2.4'
     public: true
     plan:
