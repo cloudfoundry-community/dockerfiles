@@ -8,7 +8,8 @@ ADD scripts/install_aws_cli.sh /opt/scripts/
 
 # base packages
 RUN apt-get update && \
-    apt-get install -yy wget curl file unzip git ruby make bzip2
+    apt-get install -yy wget curl file unzip git ruby make bzip2 python3-pip && \
+    pip3 install --upgrade pip
 
 # packages from https://apt.starkandwayne.com/
 RUN wget -q -O - https://raw.githubusercontent.com/starkandwayne/homebrew-cf/master/public.key | apt-key add -
