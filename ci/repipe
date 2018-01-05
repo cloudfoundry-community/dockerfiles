@@ -5,6 +5,8 @@ if [[ -z ${1} ]]; then
 fi
 concourse=${1}
 
+fly_cmd="${FLY_CMD:-fly}"
+
 set -eu
 root=$(cd $(dirname $BASH_SOURCE[0])/..; pwd)
 
@@ -28,4 +30,4 @@ ifpresent() {
     > .live.yml) || exit 2
 
 set -x
-fly set-pipeline -p docker-images -c ${root}/ci/.live.yml -t ${concourse}
+$fly_cmd set-pipeline -p docker-images -c ${root}/ci/.live.yml -t ${concourse}
