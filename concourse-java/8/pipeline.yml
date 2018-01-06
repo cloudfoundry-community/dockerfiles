@@ -3,8 +3,8 @@ groups:
   - name: concourse-java
     jobs:
       - (( append ))
-      - 'build concourse-java:8'
-      - 'promote concourse-java:8'
+      - 'build-concourse-java:8'
+      - 'promote-concourse-java:8'
 
 resources:
   - name: 'concourse-java:8 @github'
@@ -24,23 +24,23 @@ resources:
       tag: 8
 
 jobs:
-  - name: 'build concourse-java:8'
+  - name: 'build-concourse-java:8'
     public: true
     plan:
       - aggregate:
         - get: git
           resource: 'concourse-java:8 @github'
           trigger:  true
-        - { get: img, resource: 'concourse:latest @dockerhub', trigger: true, passed: ['promote concourse:latest'] }
+        - { get: img, resource: 'concourse:latest @dockerhub', trigger: true, passed: ['promote-concourse:latest'] }
       - put: 'concourse-java:8-rc @dockerhub'
         params:
           build: git/concourse-java/8
-  - name: 'promote concourse-java:8'
+  - name: 'promote-concourse-java:8'
     public: true
     plan:
       - get: rc
         resource: 'concourse-java:8-rc @dockerhub'
-        passed: ['build concourse-java:8']
+        passed: ['build-concourse-java:8']
         params: { save: true }
       - put: 'concourse-java:8 @dockerhub'
         params:

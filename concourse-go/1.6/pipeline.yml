@@ -3,8 +3,8 @@ groups:
   - name: concourse-go
     jobs:
       - (( append ))
-      - 'build concourse-go:1.6'
-      - 'promote concourse-go:1.6'
+      - 'build-concourse-go:1.6'
+      - 'promote-concourse-go:1.6'
 
 resources:
   - name: 'concourse-go:1.6 @github'
@@ -24,20 +24,20 @@ resources:
       tag: 1.6
 
 jobs:
-  - name: 'build concourse-go:1.6'
+  - name: 'build-concourse-go:1.6'
     public: true
     plan:
       - aggregate:
         - { get: git, resource: 'concourse-go:1.6 @github',    trigger: true }
-        - { get: img, resource: 'concourse:latest @dockerhub', trigger: true, passed: ['promote concourse:latest'] }
+        - { get: img, resource: 'concourse:latest @dockerhub', trigger: true, passed: ['promote-concourse:latest'] }
       - put: 'concourse-go:1.6-rc @dockerhub'
         params: { build: git/concourse-go/1.6 }
-  - name: 'promote concourse-go:1.6'
+  - name: 'promote-concourse-go:1.6'
     public: true
     plan:
       - get: rc
         resource: 'concourse-go:1.6-rc @dockerhub'
-        passed: ['build concourse-go:1.6']
+        passed: ['build-concourse-go:1.6']
         params: { save: true }
       - put: 'concourse-go:1.6 @dockerhub'
         params:

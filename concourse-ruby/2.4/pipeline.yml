@@ -3,8 +3,8 @@ groups:
   - name: concourse-ruby
     jobs:
       - (( append ))
-      - 'build concourse-ruby:2.4'
-      - 'promote concourse-ruby:2.4'
+      - 'build-concourse-ruby:2.4'
+      - 'promote-concourse-ruby:2.4'
 
 resources:
   - name: 'concourse-ruby:2.4 @github'
@@ -24,23 +24,23 @@ resources:
       tag: 2.4
 
 jobs:
-  - name: 'build concourse-ruby:2.4'
+  - name: 'build-concourse-ruby:2.4'
     public: true
     plan:
       - aggregate:
         - get: git
           resource: 'concourse-ruby:2.4 @github'
           trigger:  true
-        - { get: img, resource: 'concourse:latest @dockerhub', trigger: true, passed: ['promote concourse:latest'] }
+        - { get: img, resource: 'concourse:latest @dockerhub', trigger: true, passed: ['promote-concourse:latest'] }
       - put: 'concourse-ruby:2.4-rc @dockerhub'
         params:
           build: git/concourse-ruby/2.4
-  - name: 'promote concourse-ruby:2.4'
+  - name: 'promote-concourse-ruby:2.4'
     public: true
     plan:
       - get: rc
         resource: 'concourse-ruby:2.4-rc @dockerhub'
-        passed: ['build concourse-ruby:2.4']
+        passed: ['build-concourse-ruby:2.4']
         params: { save: true }
       - put: 'concourse-ruby:2.4 @dockerhub'
         params:
