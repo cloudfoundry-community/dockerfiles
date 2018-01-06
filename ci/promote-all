@@ -16,3 +16,5 @@ promote_jobs=( $(spruce json <(echo "$manifest") | jq -r '.jobs[].name | select(
 for promote in "${promote_jobs[@]}"; do
   $fly_cmd -t $concourse trigger-job -j docker-images/$promote
 done
+
+watch -n10 -c "script -q /dev/null $fly_cmd -t $concourse builds -c 30"
