@@ -12,9 +12,10 @@ RUN apt-get update && \
     pip3 install --upgrade pip
 
 # packages from https://apt.starkandwayne.com/
-RUN wget -q -O - https://raw.githubusercontent.com/starkandwayne/homebrew-cf/master/public.key | apt-key add -
-RUN echo "deb http://apt.starkandwayne.com stable main" | tee /etc/apt/sources.list.d/starkandwayne.list
-RUN apt-get update && apt-get install -y \
+RUN wget -q -O - https://raw.githubusercontent.com/starkandwayne/homebrew-cf/master/public.key | apt-key add - \
+ && echo "deb http://apt.starkandwayne.com stable main" | tee /etc/apt/sources.list.d/starkandwayne.list \
+ && apt-get update && apt-get install -y \
+      autoconf \
       bosh-cli \
       build-essential \
       certstrap \
@@ -47,7 +48,7 @@ RUN apt-get update && apt-get install -y \
       vim-common \
       zlib1g-dev \
       zlibc \
-    && rm -rf /var/lib/apt/lists/*
+  && rm -rf /var/lib/apt/lists/*
 
 # spiff
 RUN curl -L >spiff.zip https://github.com/cloudfoundry-incubator/spiff/releases/download/v1.0.5/spiff_linux_amd64.zip \
