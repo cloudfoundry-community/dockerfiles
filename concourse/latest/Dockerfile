@@ -31,6 +31,7 @@ RUN wget -q -O - https://raw.githubusercontent.com/starkandwayne/homebrew-cf/mas
       libreadline6-dev \
       libsqlite3-dev \
       libssl-dev \
+      libtool \
       libxml2-dev \
       libxslt-dev \
       libyaml-dev \
