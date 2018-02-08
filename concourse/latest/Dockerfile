@@ -15,31 +15,39 @@ RUN apt-get update && \
 RUN wget -q -O - https://raw.githubusercontent.com/starkandwayne/homebrew-cf/master/public.key | apt-key add -
 RUN echo "deb http://apt.starkandwayne.com stable main" | tee /etc/apt/sources.list.d/starkandwayne.list
 RUN apt-get update && apt-get install -y \
-      spruce \
-      safe \
       bosh-cli \
-      vault \
+      build-essential \
+      certstrap \
+      cf-cli \
+      concourse \
+      concourse-fly \
+      credhub-cli \
       genesis \
       gotcha \
-      shield \
-      certstrap \
-      credhub-cli \
-      cf-cli \
+      hub \
       jq \
-      sipcalc \
-      concourse-fly \
-      concourse \
-      om \
-      pivnet-cli \
+      libreadline6 \
+      libreadline6-dev \
+      libsqlite3-dev \
+      libssl-dev \
+      libxml2-dev \
+      libxslt-dev \
+      libyaml-dev \
       lsof \
-      hub
-
-# safe uses xxd in tests
-RUN apt-get update && apt-get install -y vim-common
-
-# bosh-init/create-env deps
-RUN apt-get update && \
-    apt-get install -yy build-essential zlibc zlib1g-dev ruby-dev openssl libxslt-dev libxml2-dev libssl-dev libreadline6 libreadline6-dev libyaml-dev libsqlite3-dev sqlite3
+      om \
+      openssl \
+      pivnet-cli \
+      ruby-dev \
+      safe \
+      shield \
+      sipcalc \
+      spruce \
+      sqlite3 \
+      vault \
+      vim-common \
+      zlib1g-dev \
+      zlibc \
+    && rm -rf /var/lib/apt/lists/*
 
 # spiff
 RUN curl -L >spiff.zip https://github.com/cloudfoundry-incubator/spiff/releases/download/v1.0.5/spiff_linux_amd64.zip \
@@ -51,7 +59,6 @@ RUN /opt/scripts/install_aws_cli.sh
 
 # Rubygems
 RUN gem install bosh_cli cf-uaac fpm deb-s3 --no-ri --no-rdoc
-    
-# Add a user for running things as non-superuser
 
+# Add a user for running things as non-superuser
 RUN useradd -ms /bin/bash worker
