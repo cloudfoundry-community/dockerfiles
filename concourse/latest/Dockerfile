@@ -56,6 +56,11 @@ RUN curl -L >spiff.zip https://github.com/cloudfoundry-incubator/spiff/releases/
  && unzip spiff.zip -d /usr/bin \
  && rm spiff.zip
 
+# Install Hugo
+RUN curl -L >hugo.tar.gz https://github.com/gohugoio/hugo/releases/download/v0.36/hugo_0.36_Linux-64bit.tar.gz \
+ && tar -xzvf hugo.tar.gz -C /usr/bin \
+ && rm hugo.tar.gz
+
 # Python + AWS CLI
 RUN /opt/scripts/install_aws_cli.sh
 
