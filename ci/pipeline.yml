@@ -26,8 +26,9 @@ meta:
 
 groups:
   - name: '*'
-    jobs: (( grab groups.concourse.jobs groups.concourse-go.jobs groups.concourse-java.jobs groups.concourse-ruby.jobs ))
+    jobs: (( grab groups.concourse.jobs groups.concourse-go.jobs groups.concourse-java.jobs groups.concourse-ruby.jobs groups.concourse-nodejs.jobs ))
   - name: concourse
   - name: concourse-go
   - name: concourse-java
   - name: concourse-ruby
+  - name: concourse-nodejs
