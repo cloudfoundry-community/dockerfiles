@@ -4,12 +4,11 @@ ENV COLUMNS=80
 
 # COLUMNS var added to work around bosh cli needing a terminal size specified
 
-ADD scripts/install_aws_cli.sh /opt/scripts/
-
 # base packages
 RUN apt-get update && \
     apt-get install -yy wget curl file unzip git ruby make bzip2 python3-pip && \
-    pip3 install --upgrade pip
+    pip3 install --upgrade pip && \
+    pip3 install awscli
 
 # packages from https://apt.starkandwayne.com/
 RUN wget -q -O - https://raw.githubusercontent.com/starkandwayne/homebrew-cf/master/public.key | apt-key add - \
@@ -56,9 +55,6 @@ RUN wget -q -O - https://raw.githubusercontent.com/starkandwayne/homebrew-cf/mas
 RUN curl -L >hugo.tar.gz https://github.com/gohugoio/hugo/releases/download/v0.36/hugo_0.36_Linux-64bit.tar.gz \
  && tar -xzvf hugo.tar.gz -C /usr/bin \
  && rm hugo.tar.gz
-
-# Python + AWS CLI
-RUN /opt/scripts/install_aws_cli.sh
 
 # Rubygems
 RUN gem install cf-uaac fpm deb-s3 --no-ri --no-rdoc
