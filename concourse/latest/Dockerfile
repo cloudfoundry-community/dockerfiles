@@ -52,10 +52,6 @@ RUN wget -q -O - https://raw.githubusercontent.com/starkandwayne/homebrew-cf/mas
   && rm -rf /var/lib/apt/lists/*
 
 # spiff
-RUN curl -L >spiff.zip https://github.com/cloudfoundry-incubator/spiff/releases/download/v1.0.5/spiff_linux_amd64.zip \
- && unzip spiff.zip -d /usr/bin \
- && rm spiff.zip
-
 # Install Hugo
 RUN curl -L >hugo.tar.gz https://github.com/gohugoio/hugo/releases/download/v0.36/hugo_0.36_Linux-64bit.tar.gz \
  && tar -xzvf hugo.tar.gz -C /usr/bin \
@@ -65,7 +61,7 @@ RUN curl -L >hugo.tar.gz https://github.com/gohugoio/hugo/releases/download/v0.3
 RUN /opt/scripts/install_aws_cli.sh
 
 # Rubygems
-RUN gem install bosh_cli cf-uaac fpm deb-s3 --no-ri --no-rdoc
+RUN gem install cf-uaac fpm deb-s3 --no-ri --no-rdoc
 
 # Add a user for running things as non-superuser
 RUN useradd -ms /bin/bash worker
