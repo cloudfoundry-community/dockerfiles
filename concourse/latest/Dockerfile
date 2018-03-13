@@ -5,26 +5,26 @@ ENV COLUMNS=80
 # COLUMNS var added to work around bosh cli needing a terminal size specified
 
 # base packages
-RUN apt-get update && \
-    apt-get install -yy wget curl file unzip git ruby make bzip2 python3-pip && \
-    pip3 install --upgrade pip && \
-    pip3 install awscli
-
-# packages from https://apt.starkandwayne.com/
-RUN wget -q -O - https://raw.githubusercontent.com/starkandwayne/homebrew-cf/master/public.key | apt-key add - \
- && echo "deb http://apt.starkandwayne.com stable main" | tee /etc/apt/sources.list.d/starkandwayne.list \
- && apt-get update && apt-get install -y \
+RUN apt-get update \
+    && apt-get install -yy wget \
+    && wget -q -O - https://raw.githubusercontent.com/starkandwayne/homebrew-cf/master/public.key | apt-key add - \
+    && echo "deb http://apt.starkandwayne.com stable main" | tee /etc/apt/sources.list.d/starkandwayne.list \
+    && apt-get update && apt-get install -yy \
       autoconf \
       bosh-cli \
       build-essential \
+      bzip2 \
       certstrap \
       cf-cli \
       concourse \
       concourse-fly \
       credhub-cli \
+      curl \
       genesis \
+      git \
       gotcha \
       hub \
+      file \
       jq \
       libreadline6 \
       libreadline6-dev \
@@ -38,6 +38,8 @@ RUN wget -q -O - https://raw.githubusercontent.com/starkandwayne/homebrew-cf/mas
       om \
       openssl \
       pivnet-cli \
+      python3-pip \
+      ruby \
       ruby-dev \
       safe \
       shield \
@@ -46,11 +48,14 @@ RUN wget -q -O - https://raw.githubusercontent.com/starkandwayne/homebrew-cf/mas
       sqlite3 \
       vault \
       vim-common \
+      wget \
+      unzip \
       zlib1g-dev \
       zlibc \
-  && rm -rf /var/lib/apt/lists/*
+    && pip3 install --upgrade pip \
+    && pip3 install awscli \
+    && rm -rf /var/lib/apt/lists/*
 
-# spiff
 # Install Hugo
 RUN curl -L >hugo.tar.gz https://github.com/gohugoio/hugo/releases/download/v0.36/hugo_0.36_Linux-64bit.tar.gz \
  && tar -xzvf hugo.tar.gz -C /usr/bin \
