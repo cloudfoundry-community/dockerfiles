@@ -32,3 +32,4 @@ groups:
   - name: concourse-java
   - name: concourse-ruby
   - name: concourse-nodejs
+  - name: concourse-oldbosh

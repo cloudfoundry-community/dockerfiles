@@ -1,0 +1,47 @@
+---
+groups:
+  - name: concourse-oldbosh
+    jobs:
+      - (( append ))
+      - 'build-concourse-oldbosh:latest'
+      - 'promote-concourse-oldbosh:latest'
+
+resources:
+  - name: 'concourse-oldbosh:latest @github'
+    .: (( inject meta.resources.dockerfiles ))
+    source:
+      paths:
+        - concourse-oldbosh/latest/Dockerfile
+        - concourse-oldbosh/latest/scripts/*
+
+  - name: 'concourse:latest-rc @dockerhub'
+    .: (( inject meta.resources.dockerhub ))
+    source:
+      repository: (( concat meta.dockerhub.account "/concourse-oldbosh" ))
+      tag: latest-rc
+  - name: 'concourse:latest @dockerhub'
+    .: (( inject meta.resources.dockerhub ))
+    source:
+      repository: (( concat meta.dockerhub.account "/concourse-oldbosh" ))
+      tag: latest
+
+jobs:
+  - name: 'build-concourse-oldbosh:latest'
+    public: true
+    plan:
+      - get: git
+        resource: 'concourse-oldbosh:latest @github'
+        trigger:  true
+      - put: 'concourse-oldbosh:latest-rc @dockerhub'
+        params:
+          build: git/concourse-oldbosh/latest
+  - name: 'promote-concourse-oldbosh:latest'
+    public: true
+    plan:
+      - get: rc
+        resource: 'concourse-oldbosh:latest-rc @dockerhub'
+        passed: ['build-concourse-oldbosh:latest']
+        params: { save: true }
+      - put: 'concourse-oldbosh:latest @dockerhub'
+        params:
+          load:       rc
