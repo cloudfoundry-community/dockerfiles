@@ -12,6 +12,7 @@ RUN apt-get update && \
     build-essential \
     zlibc \
     zlib1g-dev \
+    ruby \
     ruby-dev \
     openssl \
     libxslt-dev \
