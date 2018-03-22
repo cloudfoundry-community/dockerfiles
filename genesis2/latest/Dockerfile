@@ -8,6 +8,8 @@ RUN apt-get update && \
     apt-get install -yy \
     wget \
     git \
+    curl \
+    jq \
     \
     build-essential \
     zlibc \
