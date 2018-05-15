@@ -35,7 +35,7 @@ RUN set -ex \
 	&& echo "$RUBY_DOWNLOAD_SHA256 *ruby.tar.gz" | sha256sum -c - \
 	\
 	&& mkdir -p /usr/src/ruby \
-	&& tar -xfz ruby.tar.gz -C /usr/src/ruby --strip-components=1 \
+	&& tar -xzf ruby.tar.gz -C /usr/src/ruby --strip-components=1 \
 	&& rm ruby.tar.gz \
 	\
 	&& cd /usr/src/ruby \
