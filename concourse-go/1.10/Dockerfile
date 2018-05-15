@@ -9,9 +9,12 @@ RUN apt-get update && apt-get install bzr gcc -y
 # curl url will output to stand out, with | to direct it to tar, which will extract the precompliled
 # go lang to /goroot
 
+# https://golang.org/dl/
+ENV GOLANG_VERSION 1.10.2
+
 RUN \
   mkdir -p /goroot /gopath  && \
-  curl https://storage.googleapis.com/golang/go1.10.linux-amd64.tar.gz | \
+  curl https://storage.googleapis.com/golang/go${GOLANG_VERSION}.linux-amd64.tar.gz | \
   tar xvzf - -C /goroot --strip-components=1 && \
   chown -R worker /goroot /gopath
 
