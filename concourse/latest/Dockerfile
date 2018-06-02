@@ -44,13 +44,17 @@ RUN apt-get update \
       sipcalc \
       spruce \
       sqlite3 \
-      vault \
       vim-common \
       wget \
       unzip \
       zlib1g-dev \
       zlibc \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && curl -Lo vault.zip https://releases.hashicorp.com/vault/0.9.6/vault_0.9.6_linux_amd64.zip \
+    && unzip vault.zip \
+    && mv vault /usr/bin/vault \
+    && chmod 0755 /usr/bin/vault \
+    && rm vault.zip
 
 # Install Hugo
 RUN curl -L >hugo.tar.gz https://github.com/gohugoio/hugo/releases/download/v0.36/hugo_0.36_Linux-64bit.tar.gz \
