@@ -25,8 +25,8 @@ RUN apt-get update \
       hub \
       file \
       jq \
-      libreadline6 \
-      libreadline6-dev \
+      libreadline7 \
+      libreadline-dev \
       libsqlite3-dev \
       libssl-dev \
       libtool \
@@ -37,7 +37,6 @@ RUN apt-get update \
       om \
       openssl \
       pivnet-cli \
-      python3-pip \
       ruby \
       ruby-dev \
       safe \
@@ -51,8 +50,6 @@ RUN apt-get update \
       unzip \
       zlib1g-dev \
       zlibc \
-    && pip3 install --upgrade pip \
-    && pip3 install awscli \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Hugo
