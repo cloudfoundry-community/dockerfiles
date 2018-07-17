@@ -7,7 +7,7 @@ meta:
     password: (( vault "secret/pipelines/dockerfiles/dockerhub:password" ))
 
   github:
-    key: (( vault "secret/pipelines/dockerfiles/github:key" ))
+    key: (( vault "secret/pipelines/shared/github:private_key" ))
 
   resources:
     dockerfiles:
