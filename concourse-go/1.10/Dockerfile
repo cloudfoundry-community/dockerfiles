@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install bzr gcc -y
 # go lang to /goroot
 
 # https://golang.org/dl/
-ENV GOLANG_VERSION 1.10.2
+ENV GOLANG_VERSION 1.10.4
 
 RUN \
   mkdir -p /goroot /gopath  && \
@@ -27,6 +27,6 @@ ENV \
 
 # Useful go packages.
 RUN go get golang.org/x/tools/cmd/cover \
- && go get github.com/golang/lint/golint \
+ && go get golang.org/x/lint/golint \
  && go get github.com/tools/godep \
  && go get github.com/laher/goxc

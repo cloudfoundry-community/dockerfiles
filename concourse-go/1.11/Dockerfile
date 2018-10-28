@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install bzr gcc -y
 # go lang to /goroot
 
 # https://golang.org/dl/
-ENV GOLANG_VERSION 1.9.7
+ENV GOLANG_VERSION 1.11.1
 
 RUN \
   mkdir -p /goroot /gopath  && \
