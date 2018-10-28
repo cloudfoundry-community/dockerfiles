@@ -9,8 +9,8 @@ RUN mkdir -p /usr/local/etc \
 
 # https://www.ruby-lang.org/en/downloads/
 ENV RUBY_MAJOR 2.5
-ENV RUBY_VERSION 2.5.1
-ENV RUBY_DOWNLOAD_SHA256 dac81822325b79c3ba9532b048c2123357d3310b2b40024202f360251d9829b1
+ENV RUBY_VERSION 2.5.3
+ENV RUBY_DOWNLOAD_SHA256 9828d03852c37c20fa333a0264f2490f07338576734d910ee3fd538c9520846c
 
 # some of ruby's build scripts are written in ruby
 #   we purge system ruby later to make sure our final image uses what we just built
