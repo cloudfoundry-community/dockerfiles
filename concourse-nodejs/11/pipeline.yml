@@ -1,0 +1,47 @@
+---
+groups:
+  - name: concourse-nodejs
+    jobs:
+      - (( append ))
+      - 'build-concourse-nodejs:11'
+      - 'promote-concourse-nodejs:11'
+
+resources:
+  - name: 'concourse-nodejs:11 @github'
+    .: (( inject meta.resources.dockerfiles ))
+    source:
+      paths:
+        - concourse-nodejs/11/Dockerfile
+  - name: 'concourse-nodejs:11-rc @dockerhub'
+    .: (( inject meta.resources.dockerhub ))
+    source:
+      repository: (( concat meta.dockerhub.account "/concourse-nodejs" ))
+      tag: 11-rc
+  - name: 'concourse-nodejs:11 @dockerhub'
+    .: (( inject meta.resources.dockerhub ))
+    source:
+      repository: (( concat meta.dockerhub.account "/concourse-nodejs" ))
+      tag: 11
+
+jobs:
+  - name: 'build-concourse-nodejs:11'
+    public: true
+    plan:
+      - aggregate:
+        - get: git
+          resource: 'concourse-nodejs:11 @github'
+          trigger:  true
+        - { get: img, resource: 'concourse:latest @dockerhub', trigger: true, passed: ['promote-concourse:latest'] }
+      - put: 'concourse-nodejs:11-rc @dockerhub'
+        params:
+          build: git/concourse-nodejs/11
+  - name: 'promote-concourse-nodejs:11'
+    public: true
+    plan:
+      - get: rc
+        resource: 'concourse-nodejs:11-rc @dockerhub'
+        passed: ['build-concourse-nodejs:11']
+        params: { save: true }
+      - put: 'concourse-nodejs:11 @dockerhub'
+        params:
+          load: rc
