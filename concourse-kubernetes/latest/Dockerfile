@@ -6,7 +6,7 @@ ENV COLUMNS=80
 
 # base packages
 RUN apt-get update \
-    && export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)" \
+    && export CLOUD_SDK_REPO=$(cat /etc/lsb-release | grep DISTRIB_CODENAME | awk -F "=" '{print $2}') \
     && apt-get install -yy wget gnupg \
     && wget -q -O - https://raw.githubusercontent.com/starkandwayne/homebrew-cf/master/public.key | apt-key add - \
     && echo "deb http://apt.starkandwayne.com stable main" | tee /etc/apt/sources.list.d/starkandwayne.list \
