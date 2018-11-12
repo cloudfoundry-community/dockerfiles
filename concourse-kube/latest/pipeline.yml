@@ -11,8 +11,8 @@ resources:
     .: (( inject meta.resources.dockerfiles ))
     source:
       paths:
-        - concourse/latest/Dockerfile
-        - concourse/latest/scripts/*
+        - concourse-kube/latest/Dockerfile
+        - concourse-kube/latest/scripts/*
 
   - name: 'concourse-kube:latest-rc @dockerhub'
     .: (( inject meta.resources.dockerhub ))
@@ -34,7 +34,7 @@ jobs:
         trigger:  true
       - put: 'concourse-kube:latest-rc @dockerhub'
         params:
-          build: git/concourse/latest
+          build: git/concourse-kube/latest
   - name: 'promote-concourse-kube:latest'
     public: true
     plan:
