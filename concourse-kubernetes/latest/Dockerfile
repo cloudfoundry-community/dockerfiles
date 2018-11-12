@@ -21,8 +21,7 @@ RUN apt-get update \
       jq \
       kubectl \
       unzip \
-    && rm -rf /var/lib/apt/lists/* \
-    && gcloud init
+    && rm -rf /var/lib/apt/lists/*
 
 # Add a user for running things as non-superuser
 RUN useradd -ms /bin/bash worker
