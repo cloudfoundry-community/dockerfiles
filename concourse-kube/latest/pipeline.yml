@@ -1,0 +1,47 @@
+---
+groups:
+  - name: concourse-kube
+    jobs:
+      - (( append ))
+      - 'build-concourse-kube:latest'
+      - 'promote-concourse-kube:latest'
+
+resources:
+  - name: 'concourse-kube:latest @github'
+    .: (( inject meta.resources.dockerfiles ))
+    source:
+      paths:
+        - concourse/latest/Dockerfile
+        - concourse/latest/scripts/*
+
+  - name: 'concourse-kube:latest-rc @dockerhub'
+    .: (( inject meta.resources.dockerhub ))
+    source:
+      repository: (( concat meta.dockerhub.account "/concourse" ))
+      tag: latest-rc
+  - name: 'concourse-kube:latest @dockerhub'
+    .: (( inject meta.resources.dockerhub ))
+    source:
+      repository: (( concat meta.dockerhub.account "/concourse" ))
+      tag: latest
+
+jobs:
+  - name: 'build-concourse-kube:latest'
+    public: true
+    plan:
+      - get: git
+        resource: 'concourse-kube:latest @github'
+        trigger:  true
+      - put: 'concourse-kube:latest-rc @dockerhub'
+        params:
+          build: git/concourse/latest
+  - name: 'promote-concourse-kube:latest'
+    public: true
+    plan:
+      - get: rc
+        resource: 'concourse-kube:latest-rc @dockerhub'
+        passed: ['build-concourse-kube:latest']
+        params: { save: true }
+      - put: 'concourse-kube:latest @dockerhub'
+        params:
+          load:       rc
