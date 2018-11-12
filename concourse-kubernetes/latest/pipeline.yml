@@ -16,7 +16,7 @@ resources:
   - name: 'concourse-kubernetes:latest @dockerhub'
     .: (( inject meta.resources.dockerhub ))
     source:
-      repository: (( concat meta.dockerhub.account "/concourse" ))
+      repository: (( concat meta.dockerhub.account "/concourse-kubernetes" ))
       tag: latest
 
 jobs:
