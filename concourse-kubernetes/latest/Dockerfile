@@ -20,6 +20,7 @@ RUN apt-get update \
       file \
       jq \
       kubectl \
+      knctl \
       unzip \
     && rm -rf /var/lib/apt/lists/*
 
