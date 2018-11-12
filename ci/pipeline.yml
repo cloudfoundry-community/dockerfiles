@@ -26,9 +26,10 @@ meta:
 
 groups:
   - name: '*'
-    jobs: (( grab groups.concourse.jobs groups.concourse-go.jobs groups.concourse-java.jobs groups.concourse-ruby.jobs groups.concourse-nodejs.jobs ))
+    jobs: (( grab groups.concourse.jobs groups.concourse-go.jobs groups.concourse-java.jobs groups.concourse-ruby.jobs groups.concourse-nodejs.jobs groups.concourse-kube.jobs ))
   - name: concourse
   - name: concourse-go
   - name: concourse-java
   - name: concourse-ruby
   - name: concourse-nodejs
+  - name: concourse-kube
