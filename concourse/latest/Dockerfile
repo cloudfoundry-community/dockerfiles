@@ -59,6 +59,11 @@ RUN apt-get update \
     && chmod 0755 /usr/bin/vault \
     && rm vault.zip
 
+# Install git-lfs
+RUN curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | bash && \
+    apt-get install git-lfs && \
+    git lfs install
+
 # Install Hugo
 RUN curl -L >hugo.tar.gz https://github.com/gohugoio/hugo/releases/download/v0.36/hugo_0.36_Linux-64bit.tar.gz \
  && tar -xzvf hugo.tar.gz -C /usr/bin \
