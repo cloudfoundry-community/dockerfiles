@@ -42,7 +42,6 @@ RUN apt-get update \
       pivnet-cli \
       ruby \
       ruby-dev \
-      safe \
       shield \
       sipcalc \
       spruce \
@@ -52,12 +51,15 @@ RUN apt-get update \
       unzip \
       zlib1g-dev \
       zlibc \
-    && rm -rf /var/lib/apt/lists/* \
-    && curl -Lo vault.zip https://releases.hashicorp.com/vault/0.9.6/vault_0.9.6_linux_amd64.zip \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN curl -Lo vault.zip https://releases.hashicorp.com/vault/1.0.2/vault_1.0.2_linux_amd64.zip \
     && unzip vault.zip \
     && mv vault /usr/bin/vault \
     && chmod 0755 /usr/bin/vault \
-    && rm vault.zip
+    && rm vault.zip \
+    && curl -Lo /usr/bin/safe https://github.com/starkandwayne/safe/releases/download/v1.0.2/safe-linux-amd64 \
+    && chmod 0755 /usr/bin/safe
 
 # Install git-lfs
 RUN curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | bash && \
