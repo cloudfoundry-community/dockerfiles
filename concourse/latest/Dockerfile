@@ -58,7 +58,7 @@ RUN curl -Lo vault.zip https://releases.hashicorp.com/vault/1.0.2/vault_1.0.2_li
     && mv vault /usr/bin/vault \
     && chmod 0755 /usr/bin/vault \
     && rm vault.zip \
-    && curl -Lo /usr/bin/safe https://github.com/starkandwayne/safe/releases/download/v1.0.2/safe-linux-amd64 \
+    && curl -Lo /usr/bin/safe https://github.com/starkandwayne/safe/releases/download/v1.1.0/safe-linux-amd64 \
     && chmod 0755 /usr/bin/safe
 
 # Install git-lfs
