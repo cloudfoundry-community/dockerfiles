@@ -6,6 +6,11 @@ meta:
     username: (( vault "secret/pipelines/dockerfiles/dockerhub:username" ))
     password: (( vault "secret/pipelines/dockerfiles/dockerhub:password" ))
 
+  gcr: # Google Container Registry
+    account: gcr.io/starkandwayne-registry/gcp-cloudshell
+    username: _json_key
+    password: (( vault "secret/pipelines/dockerfiles/gcr:service_account_key" ))
+
   github:
     key: (( vault "secret/pipelines/shared/github:private_key" ))
 
@@ -17,6 +22,12 @@ meta:
         branch: master
         private_key: (( grab meta.github.key ))
 
+    gcr:
+      type: docker-image
+      source:
+        username: (( grab meta.gcr.username ))
+        password: (( grab meta.gcr.password ))
+
     dockerhub:
       type: docker-image
       source:
@@ -26,10 +37,11 @@ meta:
 
 groups:
   - name: '*'
-    jobs: (( grab groups.concourse.jobs groups.concourse-go.jobs groups.concourse-java.jobs groups.concourse-ruby.jobs groups.concourse-nodejs.jobs groups.concourse-kubernetes.jobs ))
+    jobs: (( grab groups.concourse.jobs groups.concourse-go.jobs groups.concourse-java.jobs groups.concourse-ruby.jobs groups.concourse-nodejs.jobs groups.concourse-kubernetes.jobs groups.gcp-cloudshell.jobs ))
   - name: concourse
   - name: concourse-go
   - name: concourse-java
   - name: concourse-ruby
   - name: concourse-nodejs
   - name: concourse-kubernetes
+  - name: gcp-cloudshell

@@ -1,0 +1,47 @@
+---
+groups:
+  - name: gcp-cloudshell
+    jobs:
+      - (( append ))
+      - 'build-gcp-cloudshell:latest'
+      - 'promote-gcp-cloudshell:latest'
+
+resources:
+  - name: 'gcp-cloudshell:latest @github'
+    .: (( inject meta.resources.dockerfiles ))
+    source:
+      paths:
+        - gcp-cloudshell/latest/Dockerfile
+        - gcp-cloudshell/latest/scripts/*
+
+  - name: 'gcp-cloudshell:latest-rc @gcr'
+    .: (( inject meta.resources.gcr ))
+    source:
+      repository: (( concat meta.gcr.account "/gcp-cloudshell" ))
+      tag: latest-rc
+  - name: 'concourse:latest @gcr'
+    .: (( inject meta.resources.dockerhub ))
+    source:
+      repository: (( concat meta.gcr.account "/gcp-cloudshell" ))
+      tag: latest
+
+jobs:
+  - name: 'build-gcp-cloudshell:latest'
+    public: true
+    plan:
+      - get: git
+        resource: 'gcp-cloudshell:latest @github'
+        trigger:  true
+      - put: 'gcp-cloudshell:latest-rc @gcr'
+        params:
+          build: git/gcp-cloudshell/latest
+  - name: 'promote-gcp-cloudshell:latest'
+    public: true
+    plan:
+      - get: rc
+        resource: 'gcp-cloudshell:latest-rc @gcr'
+        passed: ['build-gcp-cloudshell:latest']
+        params: { save: true }
+      - put: 'gcp-cloudshell:latest @gcr'
+        params:
+          load: rc
