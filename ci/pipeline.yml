@@ -2,17 +2,17 @@
 meta:
   dockerhub:
     account:  starkandwayne
-    email:    (( vault "secret/pipelines/dockerfiles/dockerhub:email" ))
-    username: (( vault "secret/pipelines/dockerfiles/dockerhub:username" ))
-    password: (( vault "secret/pipelines/dockerfiles/dockerhub:password" ))
+    email:    ((dockerhub-email))
+    username: ((dockerhub-username))
+    password: ((dockerhub-password))
 
   gcr: # Google Container Registry
     account: gcr.io/starkandwayne-registry/gcp-cloudshell
     username: _json_key
-    password: (( vault "secret/pipelines/dockerfiles/gcr:service_account_key" ))
+    password: ((gcr-service-account-key))
 
   github:
-    key: (( vault "secret/pipelines/shared/github:private_key" ))
+    key: ((github-private-key))
 
   resources:
     dockerfiles:
