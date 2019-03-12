@@ -19,7 +19,7 @@ resources:
     source:
       repository: (( concat meta.gcr.account "/gcp-cloudshell" ))
       tag: latest-rc
-  - name: 'concourse:latest @gcr'
+  - name: 'gcp-cloudshell:latest @gcr'
     .: (( inject meta.resources.dockerhub ))
     source:
       repository: (( concat meta.gcr.account "/gcp-cloudshell" ))
