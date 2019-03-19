@@ -7,7 +7,7 @@ meta:
     password: ((dockerhub-password))
 
   gcr: # Google Container Registry
-    account: gcr.io/starkandwayne-registry/gcp-cloudshell
+    account: gcr.io/starkandwayne-registry
     username: _json_key
     password: ((gcr-service-account-key))
 
