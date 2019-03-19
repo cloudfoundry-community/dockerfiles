@@ -1,14 +1,5 @@
 FROM gcr.io/cloudshell-images/cloudshell:latest
 
-# Add your content here
-
-# To trigger a rebuild of your Cloud Shell image:
-# 1. Commit your changes locally: git commit -a
-# 2. Push your changes upstream: git push origin master
-
-# This triggers a rebuild of your image hosted at gcr.io/snw-cfsummit/test.
-# You can find the Cloud Source Repository hosting this file at https://source.developers.google.com/p/snw-cfsummit/r/test
-
 RUN apt-get update \
     && apt-get install -yy wget gnupg \
     && wget -q -O - https://raw.githubusercontent.com/starkandwayne/homebrew-cf/master/public.key | apt-key add - \
@@ -18,6 +9,7 @@ RUN apt-get update \
     && apt-get update && apt-get install -yy \
       autoconf \
       bosh-cli \
+      bosh-bootloader \
       build-essential \
       bzip2 \
       certstrap \
