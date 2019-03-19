@@ -1,4 +1,4 @@
-FROM gcr.io/cloudshell-images/cloudshell:latest
+FROM gcr.io/cloudshell-images/cloudshell@sha256:8ff2ef8d14f361c465ce72a593afbbb2ce780879f2bc35cfa8c6d3d9c7f1b0de
 
 RUN apt-get update \
     && apt-get install -yy wget gnupg \
