@@ -3,10 +3,15 @@ groups:
   - name: gcp-cloudshell
     jobs:
       - (( append ))
-      - 'build-gcp-cloudshell:latest'
-      - 'promote-gcp-cloudshell:latest'
+      - 'bump-upstream-cloudshell:latest'
 
 resources:
+  - name: 'cloudshell:latest @upstream'
+    .: (( inject meta.resources.gcr ))
+    source:
+      repository: gcr.io/cloudshell-images/cloudshell
+      tag: latest
+
   - name: 'gcp-cloudshell:latest @github'
     .: (( inject meta.resources.dockerfiles ))
     source:
@@ -14,34 +19,44 @@ resources:
         - gcp-cloudshell/latest/Dockerfile
         - gcp-cloudshell/latest/scripts/*
 
-  - name: 'gcp-cloudshell:latest-rc @gcr'
-    .: (( inject meta.resources.gcr ))
-    source:
-      repository: (( concat meta.gcr.account "/gcp-cloudshell" ))
-      tag: latest-rc
-  - name: 'gcp-cloudshell:latest @gcr'
-    .: (( inject meta.resources.dockerhub ))
-    source:
-      repository: (( concat meta.gcr.account "/gcp-cloudshell" ))
-      tag: latest
-
 jobs:
-  - name: 'build-gcp-cloudshell:latest'
+  - name: 'bump-upstream-cloudshell:latest'
     public: true
     plan:
+      - get: upstream
+        resource: 'cloudshell:latest @upstream'
+        trigger: true
+        params:
+          skip_download: true
       - get: git
         resource: 'gcp-cloudshell:latest @github'
-        trigger:  true
-      - put: 'gcp-cloudshell:latest-rc @gcr'
+        trigger: true
+      - task: update-image
+        config:
+          platform: linux
+          image_resource:
+            type: docker-image
+            source:
+              repository: starkandwayne/concourse
+              tag:        latest
+          inputs: [ { name: git }, { name: upstream } ]
+          outputs: [ { name: pushme } ]
+          run:
+            path: sh
+            args:
+            - -ce
+            - |
+              digest=$(cat upstream/digest)
+              git clone ./git pushme
+              cd pushme/gcp-cloudshell/latest
+              echo "FROM gcr.io/cloudshell-images/cloudshell@${digest}" > Dockerfile.new
+              tail -n+2 Dockerfile >> Dockerfile.new
+              mv Dockerfile.new Dockerfile
+              git add Dockerfile
+              git config user.name "CI Bot" && git config user.email "ci@starkandwayne.com"
+              git commit -m "Updated upstream cloudshell image to: ${digest}"
+      - put: git
+        resource: 'gcp-cloudshell:latest @github'
         params:
-          build: git/gcp-cloudshell/latest
-  - name: 'promote-gcp-cloudshell:latest'
-    public: true
-    plan:
-      - get: rc
-        resource: 'gcp-cloudshell:latest-rc @gcr'
-        passed: ['build-gcp-cloudshell:latest']
-        params: { save: true }
-      - put: 'gcp-cloudshell:latest @gcr'
-        params:
-          load: rc
+          repository: pushme
+          merge: true
