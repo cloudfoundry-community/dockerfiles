@@ -1,6 +1,7 @@
 FROM ubuntu
 
 ENV COLUMNS=80
+ENV CF7_VERSION=7.0.0-beta.18
 
 # COLUMNS var added to work around bosh cli needing a terminal size specified
 
@@ -11,6 +12,8 @@ RUN apt-get update \
     && echo "deb http://apt.starkandwayne.com stable main" | tee /etc/apt/sources.list.d/starkandwayne.list \
     && wget -q -O - https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - \
     && echo "deb http://apt.kubernetes.io/ kubernetes-xenial main" | tee -a /etc/apt/sources.list.d/kubernetes.list \
+    && wget -O cf7-cli.tgz "https://packages.cloudfoundry.org/stable?release=linux64-binary&version=$CF7_VERSION&source=github-rel" \
+    && tar xfz cf7-cli.tgz && mv cf7 /usr/bin && rm -rf cf7-cli.tgz \
     && apt-get update && apt-get install -yy \
       autoconf \
       bosh-cli \
