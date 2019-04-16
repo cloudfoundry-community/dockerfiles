@@ -1,6 +1,7 @@
 FROM ubuntu
 
 ENV COLUMNS=80
+ENV CF7_VERSION=7.0.0-beta.18
 
 # COLUMNS var added to work around bosh cli needing a terminal size specified
 
@@ -18,6 +19,7 @@ RUN apt-get update \
       bzip2 \
       certstrap \
       cf-cli \
+      cf7-cli \
       concourse-fly \
       credhub-cli \
       curl \
@@ -42,9 +44,7 @@ RUN apt-get update \
       pivnet-cli \
       ruby \
       ruby-dev \
-      shield \
       sipcalc \
-      spruce \
       sqlite3 \
       vim-common \
       wget \
@@ -59,7 +59,9 @@ RUN curl -Lo vault.zip https://releases.hashicorp.com/vault/1.0.2/vault_1.0.2_li
     && chmod 0755 /usr/bin/vault \
     && rm vault.zip \
     && curl -Lo /usr/bin/safe https://github.com/starkandwayne/safe/releases/download/v1.1.0/safe-linux-amd64 \
-    && chmod 0755 /usr/bin/safe
+    && chmod 0755 /usr/bin/safe \
+    && curl -Lo /usr/bin/spruce https://github.com/geofffranks/spruce/releases/download/v1.19.3/spruce-linux-amd64 \
+    && chmod 0755 /usr/bin/spruce
 
 # Install git-lfs
 RUN curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | bash && \
