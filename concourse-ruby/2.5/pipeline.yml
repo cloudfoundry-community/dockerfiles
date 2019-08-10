@@ -27,11 +27,10 @@ jobs:
   - name: 'build-concourse-ruby:2.5'
     public: true
     plan:
-      - aggregate:
-        - get: git
-          resource: 'concourse-ruby:2.5 @github'
-          trigger:  true
-        - { get: img, resource: 'concourse:latest @dockerhub', trigger: true, passed: ['promote-concourse:latest'] }
+      - get: git
+        resource: 'concourse-ruby:2.5 @github'
+        trigger:  true
+      - { get: img, resource: 'concourse:latest @dockerhub', trigger: true, passed: ['promote-concourse:latest'] }
       - put: 'concourse-ruby:2.5-rc @dockerhub'
         params:
           build: git/concourse-ruby/2.5
