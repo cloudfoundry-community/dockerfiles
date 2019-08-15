@@ -1,6 +1,7 @@
 FROM ubuntu
 
 ENV COLUMNS=80
+ENV VAULT_VERSION=1.2.2
 
 # COLUMNS var added to work around bosh cli needing a terminal size specified
 
@@ -42,7 +43,9 @@ RUN apt-get update \
       pivnet-cli \
       ruby \
       ruby-dev \
+      safe \
       sipcalc \
+      spruce \
       sqlite3 \
       vim-common \
       wget \
@@ -51,15 +54,11 @@ RUN apt-get update \
       zlibc \
     && rm -rf /var/lib/apt/lists/*
 
-RUN curl -Lo vault.zip https://releases.hashicorp.com/vault/1.0.2/vault_1.0.2_linux_amd64.zip \
+RUN curl -Lo vault.zip https://releases.hashicorp.com/vault/${VAULT_VERSION}/vault_${VAULT_VERSION}_linux_amd64.zip \
     && unzip vault.zip \
     && mv vault /usr/bin/vault \
     && chmod 0755 /usr/bin/vault \
-    && rm vault.zip \
-    && curl -Lo /usr/bin/safe https://github.com/starkandwayne/safe/releases/download/v1.1.0/safe-linux-amd64 \
-    && chmod 0755 /usr/bin/safe \
-    && curl -Lo /usr/bin/spruce https://github.com/geofffranks/spruce/releases/download/v1.20.0/spruce-linux-amd64 \
-    && chmod 0755 /usr/bin/spruce
+    && rm vault.zip
 
 # Install git-lfs
 RUN curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | bash && \
