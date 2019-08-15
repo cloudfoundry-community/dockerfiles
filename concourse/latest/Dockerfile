@@ -1,7 +1,6 @@
 FROM ubuntu
 
 ENV COLUMNS=80
-ENV CF7_VERSION=7.0.0-beta.18
 
 # COLUMNS var added to work around bosh cli needing a terminal size specified
 
