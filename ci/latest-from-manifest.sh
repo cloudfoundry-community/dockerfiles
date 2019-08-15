@@ -10,5 +10,6 @@ version_prefix=$3 # e.g. 1.12.
 dependencies=$(spruce json $manifest | jq -r --arg dep $dependency '.dependencies | map(select(.name == $dep))')
 latest_version=$version_prefix$(echo "$dependencies" | jq -r ".[].version | scan(\"^$version_prefix(.*)\")[0]" | sort -r | head -n 1)
 latest_dep=$(echo "$dependencies" | jq -r --arg dep $dependency --arg version $latest_version '.[] | select(.name == $dep and .version == $version)')
-echo "$latest_dep" | jq -r ".uri"
-echo "$latest_dep" | jq -r ".sha256"
+echo "ENV GOLANG_VERSION $latest_version"
+echo "ENV GOLANG_URL $(echo "$latest_dep" | jq -r ".uri")"
+echo "ENV GOLANG_SHA256 $(echo "$latest_dep" | jq -r ".sha256")"

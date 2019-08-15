@@ -13,6 +13,7 @@ meta:
 
   github:
     key: ((github-private-key))
+    access_token: ((github-access-token))
 
   resources:
     dockerfiles:
@@ -34,6 +35,11 @@ meta:
         email:    (( grab meta.dockerhub.email ))
         username: (( grab meta.dockerhub.username ))
         password: (( grab meta.dockerhub.password ))
+
+    github-release:
+      type: github-release
+      source:
+        access_token: (( grab meta.github.access_token ))
 
 groups:
   - name: '*'
