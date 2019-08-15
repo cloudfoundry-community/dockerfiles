@@ -29,3 +29,4 @@ jobs:
       - put: 'concourse:latest @dockerhub'
         params:
           build: git/concourse/latest
+          tag_as_latest: true
