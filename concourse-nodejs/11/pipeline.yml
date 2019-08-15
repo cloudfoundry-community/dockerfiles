@@ -27,11 +27,10 @@ jobs:
   - name: 'build-concourse-nodejs:11'
     public: true
     plan:
-      - aggregate:
-        - get: git
-          resource: 'concourse-nodejs:11 @github'
-          trigger:  true
-        - { get: img, resource: 'concourse:latest @dockerhub', trigger: true, passed: ['promote-concourse:latest'] }
+      - get: git
+        resource: 'concourse-nodejs:11 @github'
+        trigger:  true
+      - { get: img, resource: 'concourse:latest @dockerhub', trigger: true, passed: ['promote-concourse:latest'] }
       - put: 'concourse-nodejs:11-rc @dockerhub'
         params:
           build: git/concourse-nodejs/11

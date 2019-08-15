@@ -27,11 +27,10 @@ jobs:
   - name: 'build-concourse-java:8'
     public: true
     plan:
-      - aggregate:
-        - get: git
-          resource: 'concourse-java:8 @github'
-          trigger:  true
-        - { get: img, resource: 'concourse:latest @dockerhub', trigger: true, passed: ['promote-concourse:latest'] }
+      - get: git
+        resource: 'concourse-java:8 @github'
+        trigger:  true
+      - { get: img, resource: 'concourse:latest @dockerhub', trigger: true, passed: ['promote-concourse:latest'] }
       - put: 'concourse-java:8-rc @dockerhub'
         params:
           build: git/concourse-java/8
