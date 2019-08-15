@@ -30,7 +30,7 @@ jobs:
       - get: git
         resource: 'concourse-ruby:2.6 @github'
         trigger:  true
-      - { get: img, resource: 'concourse:latest @dockerhub', trigger: true, passed: ['promote-concourse:latest'] }
+      - { get: img, resource: 'concourse:latest @dockerhub', trigger: true, passed: ['build-concourse:latest'] }
       - put: 'concourse-ruby:2.6-rc @dockerhub'
         params:
           build: git/concourse-ruby/2.6
