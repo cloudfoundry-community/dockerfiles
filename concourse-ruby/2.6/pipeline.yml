@@ -4,7 +4,6 @@ groups:
     jobs:
       - (( append ))
       - 'build-concourse-ruby:2.6'
-      - 'promote-concourse-ruby:2.6'
 
 resources:
   - name: 'concourse-ruby:2.6 @github'
@@ -12,35 +11,19 @@ resources:
     source:
       paths:
         - concourse-ruby/2.6/Dockerfile
-  - name: 'concourse-ruby:2.6-rc @dockerhub'
-    .: (( inject meta.resources.dockerhub ))
-    source:
-      repository: (( concat meta.dockerhub.account "/concourse-ruby" ))
-      tag: 2.6-rc
   - name: 'concourse-ruby:2.6 @dockerhub'
     .: (( inject meta.resources.dockerhub ))
     source:
       repository: (( concat meta.dockerhub.account "/concourse-ruby" ))
-      tag: 2.6
+      tag: "2.6"
 
 jobs:
   - name: 'build-concourse-ruby:2.6'
     public: true
     plan:
-      - get: git
-        resource: 'concourse-ruby:2.6 @github'
-        trigger:  true
-      - { get: img, resource: 'concourse:latest @dockerhub', trigger: true, passed: ['build-concourse:latest'] }
-      - put: 'concourse-ruby:2.6-rc @dockerhub'
-        params:
-          build: git/concourse-ruby/2.6
-  - name: 'promote-concourse-ruby:2.6'
-    public: true
-    plan:
-      - get: rc
-        resource: 'concourse-ruby:2.6-rc @dockerhub'
-        passed: ['build-concourse-ruby:2.6']
-        params: { save: true }
+      - { get: git, resource: 'concourse-ruby:2.6 @github',    trigger: true }
+      - { get: img, resource: 'concourse:latest @dockerhub', trigger: true, passed: ['build-concourse:latest'], params: {skip_download: true} }
       - put: 'concourse-ruby:2.6 @dockerhub'
         params:
-          load: rc
+          build: git/concourse-ruby/2.6
+          tag_as_latest: true
