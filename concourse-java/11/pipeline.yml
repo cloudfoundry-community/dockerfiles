@@ -4,7 +4,6 @@ groups:
     jobs:
       - (( append ))
       - 'build-concourse-java:11'
-      - 'promote-concourse-java:11'
 
 resources:
   - name: 'concourse-java:11 @github'
@@ -12,35 +11,19 @@ resources:
     source:
       paths:
         - concourse-java/11/Dockerfile
-  - name: 'concourse-java:11-rc @dockerhub'
-    .: (( inject meta.resources.dockerhub ))
-    source:
-      repository: (( concat meta.dockerhub.account "/concourse-java" ))
-      tag: 8-rc
   - name: 'concourse-java:11 @dockerhub'
     .: (( inject meta.resources.dockerhub ))
     source:
       repository: (( concat meta.dockerhub.account "/concourse-java" ))
-      tag: 8
+      tag: "11"
 
 jobs:
   - name: 'build-concourse-java:11'
     public: true
     plan:
-      - get: git
-        resource: 'concourse-java:11 @github'
-        trigger:  true
-      - { get: img, resource: 'concourse:latest @dockerhub', trigger: true, passed: ['build-concourse:latest'] }
-      - put: 'concourse-java:11-rc @dockerhub'
-        params:
-          build: git/concourse-java/11
-  - name: 'promote-concourse-java:11'
-    public: true
-    plan:
-      - get: rc
-        resource: 'concourse-java:11-rc @dockerhub'
-        passed: ['build-concourse-java:11']
-        params: { save: true }
+      - { get: git, resource: 'concourse-java:11 @github',    trigger: true }
+      - { get: img, resource: 'concourse:latest @dockerhub', trigger: true, passed: ['build-concourse:latest'], params: {skip_download: true} }
       - put: 'concourse-java:11 @dockerhub'
         params:
-          load:        rc
+          build: git/concourse-java/11
+          tag_as_latest: true
