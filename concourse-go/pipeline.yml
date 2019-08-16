@@ -1,0 +1,42 @@
+---
+groups:
+  - name: concourse-go
+    jobs:
+      - (( append ))
+      - 'bump-go-versions'
+
+resources:
+  - name: 'go-buildpack'
+    .: (( inject meta.resources.github-release ))
+    source:
+      owner: cloudfoundry
+      repository: go-buildpack
+
+  - name: git
+    .: (( inject meta.resources.dockerfiles ))
+
+jobs:
+  - name: 'bump-go-versions'
+    public: true
+    plan:
+      - { get: git }
+      - { get: buildpack, resource: 'go-buildpack', trigger: true }
+      - task: bump
+        config:
+          platform: linux
+          image_resource:
+            type: docker-image
+            source:
+              repository: starkandwayne/concourse
+              tag: latest
+          inputs:
+          - name: git
+          - name: buildpack
+          outputs:
+          - name: pushme
+          run:
+            path: git/ci/scripts/update-dockerfile-from-buildpack-resources.sh
+          params:
+            buildpack: buildpack/go-buildpack-cflinuxfs3-*.zip
+            dependency: go
+            dockerfile_dep_prefix: GOLANG

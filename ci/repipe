@@ -23,7 +23,7 @@ ifpresent() {
 
 (cd ${root}/ci && \
  spruce merge \
-        $(ifpresent pipeline.yml ../*/*/pipeline.yml)  \
+        $(ifpresent ../*/pipeline.yml ../*/*/pipeline.yml)  \
     > .full.yml) || exit 2
 (cd ${root}/ci && \
  spruce merge --prune meta .full.yml \
