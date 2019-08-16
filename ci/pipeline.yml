@@ -15,6 +15,10 @@ meta:
     key: ((github-private-key))
     access_token: ((github-access-token))
 
+  git:
+    email: ((git-commit-email))
+    name:  ((git-commit-name))
+
   resources:
     dockerfiles:
       type: git

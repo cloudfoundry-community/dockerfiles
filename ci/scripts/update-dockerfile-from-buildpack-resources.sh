@@ -16,6 +16,13 @@ dependencies=$(spruce json <(echo "$manifest") | jq -r --arg dep $dependency '.d
 git clone $root pushme
 cd pushme
 
+if [[ -z $(git config --global user.email) ]]; then
+  git config --global user.email "${git_email}"
+fi
+if [[ -z $(git config --global user.name) ]]; then
+  git config --global user.name "${git_name}"
+fi
+
 for dockerfile in $(ls -d concourse-$dependency/*/Dockerfile); do
   for version_prefix in $(basename $(dirname $dockerfile)); do
     latest_version=$version_prefix$(echo "$dependencies" | jq -r ".[].version | scan(\"^$version_prefix(.*)\")[0]" | sort -r | head -n 1)
