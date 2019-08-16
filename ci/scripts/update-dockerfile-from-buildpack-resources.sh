@@ -24,5 +24,14 @@ for dockerfile in $(ls -d concourse-$dependency/*/Dockerfile); do
     sed -i "s%^ENV ${dockerfile_dep_prefix}_VERSION.*$%ENV ${dockerfile_dep_prefix}_VERSION $latest_version%" $dockerfile
     sed -i "s%^ENV ${dockerfile_dep_prefix}_URL.*$%ENV ${dockerfile_dep_prefix}_URL $(echo "$latest_dep" | jq -r ".uri")%" $dockerfile
     sed -i "s%^ENV ${dockerfile_dep_prefix}_SHA256.*$%ENV ${dockerfile_dep_prefix}_SHA256 $(echo "$latest_dep" | jq -r ".sha256")%" $dockerfile
+
+    if [[ "$(git status -s)X" != "X" ]]; then
+      echo "Detected new $dependency $latest_version"
+      git merge --no-edit master
+      git status
+      git --no-pager diff
+      git add $dockerfile
+      git commit -m "Updated $dependency $latest_version"
+    fi
   done
 done
