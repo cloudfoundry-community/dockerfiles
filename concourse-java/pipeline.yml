@@ -35,7 +35,6 @@ jobs:
           outputs:
           - name: pushme
           params:
-            buildpack: buildpack/go-buildpack-cflinuxfs3-*.zip
             name: java
             dep_prefix: JAVA
             git_email: (( grab meta.git.email ))

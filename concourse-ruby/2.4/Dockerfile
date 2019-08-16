@@ -1,15 +1,15 @@
 FROM starkandwayne/concourse
 
-# From https://github.com/docker-library/ruby/blob/master/2.4/stretch/Dockerfile
+# From https://github.com/docker-library/ruby/blob/master/2.5/stretch/Dockerfile
 RUN mkdir -p /usr/local/etc \
 	&& { \
 		echo 'install: --no-document'; \
 		echo 'update: --no-document'; \
 	} >> /usr/local/etc/gemrc
 
+# https://www.ruby-lang.org/en/downloads/
 ENV RUBY_MAJOR 2.4
 ENV RUBY_VERSION 2.4.6
-ENV RUBY_DOWNLOAD_SHA256 de0dc8097023716099f7c8a6ffc751511b90de7f5694f401b59f2d071db910be
 
 # some of ruby's build scripts are written in ruby
 #   we purge system ruby later to make sure our final image uses what we just built
@@ -31,7 +31,6 @@ RUN set -ex \
 	&& rm -rf /var/lib/apt/lists/* \
 	\
 	&& wget -O ruby.tar.gz "https://cache.ruby-lang.org/pub/ruby/${RUBY_MAJOR%-rc}/ruby-$RUBY_VERSION.tar.gz" \
-	&& echo "$RUBY_DOWNLOAD_SHA256 *ruby.tar.gz" | sha256sum -c - \
 	\
 	&& mkdir -p /usr/src/ruby \
 	&& tar -xzf ruby.tar.gz -C /usr/src/ruby --strip-components=1 \
