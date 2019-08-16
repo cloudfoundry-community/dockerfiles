@@ -1,0 +1,76 @@
+---
+groups:
+  - name: concourse-java
+    jobs:
+      - (( append ))
+      - 'bump-java-versions'
+
+resources:
+  - name: 'java-buildpack'
+    .: (( inject meta.resources.github-release ))
+    source:
+      owner: cloudfoundry
+      repository: java-buildpack
+
+  - name: git
+    .: (( inject meta.resources.dockerfiles ))
+
+jobs:
+  - name: 'bump-java-versions'
+    public: true
+    plan:
+      - { get: git }
+      - { get: buildpack, resource: 'java-buildpack', trigger: true }
+      - task: bump
+        config:
+          platform: linux
+          image_resource:
+            type: docker-image
+            source:
+              repository: starkandwayne/concourse
+              tag: latest
+          inputs:
+          - name: git
+          - name: buildpack
+          outputs:
+          - name: pushme
+          params:
+            buildpack: buildpack/go-buildpack-cflinuxfs3-*.zip
+            name: java
+            dep_prefix: JAVA
+            git_email: (( grab meta.git.email ))
+            git_name:  (( grab meta.git.name ))
+          run:
+            path: bash
+            args:
+            - -ce
+            - |
+              git clone $root pushme
+              cd pushme
+
+              if [[ -z $(git config --global user.email) ]]; then
+                git config --global user.email "${git_email}"
+              fi
+              if [[ -z $(git config --global user.name) ]]; then
+                git config --global user.name "${git_name}"
+              fi
+
+              buildpack_version=$(cat buildpack/version)
+              for dockerfile in $(ls -d concourse-$name/*/Dockerfile); do
+                for version_prefix in $(basename $(dirname $dockerfile)); do
+                  sed -i "s%^ENV ${dep_prefix}_BUILDPACK.*$%ENV ${dep_prefix}_BUILDPACK $buildpack_version%" $dockerfile
+                done
+              done
+              if [[ "$(git status -s)X" != "X" ]]; then
+                echo "Detected new $name buildpack v$buildpack_version"
+                git merge --no-edit master
+                git status
+                git --no-pager diff
+                git add .
+                git commit -m "Bumping $name due to $name buildpack v$buildpack_version"
+              fi
+
+      - put: git
+        params:
+          rebase: true
+          repository: pushme
