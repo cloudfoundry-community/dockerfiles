@@ -4,9 +4,6 @@ set -eu
 
 root="$( cd "$( dirname "${BASH_SOURCE[0]}" )/../.." && pwd )"
 
-git clone $root pushme
-cd pushme
-
 : ${buildpack:?required: path/to/buildpack.zip or "path/to/buildpack-*.zip"}
 : ${dependency:?required: e.g. go, ruby, java}
 : ${dockerfile_dep_prefix:?required: e.g. GOLANG, RUBY}
@@ -16,7 +13,10 @@ cd pushme
 manifest=$(unzip -p $(eval ls $buildpack) manifest.yml)
 dependencies=$(spruce json <(echo "$manifest") | jq -r --arg dep $dependency '.dependencies | map(select(.name == $dep))')
 
-for dockerfile in $(ls -d $root/concourse-$dependency/*/Dockerfile); do
+git clone $root pushme
+cd pushme
+
+for dockerfile in $(ls -d concourse-$dependency/*/Dockerfile); do
   for version_prefix in $(basename $(dirname $dockerfile)); do
     latest_version=$version_prefix$(echo "$dependencies" | jq -r ".[].version | scan(\"^$version_prefix(.*)\")[0]" | sort -r | head -n 1)
     latest_dep=$(echo "$dependencies" | jq -r --arg dep $dependency --arg version $latest_version '.[] | select(.name == $dep and .version == $version)')
