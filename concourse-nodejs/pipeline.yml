@@ -37,7 +37,7 @@ jobs:
           run:
             path: git/ci/scripts/update-dockerfile-from-buildpack-resources.sh
           params:
-            buildpack: buildpack/nodejs-buildpack-cflinuxfs3-*.zip
+            buildpack: buildpack/nodejs_buildpack-cflinuxfs3-*.zip
             dependency: nodejs
             dockerfile_dep_prefix: NODE
             git_email: (( grab meta.git.email ))

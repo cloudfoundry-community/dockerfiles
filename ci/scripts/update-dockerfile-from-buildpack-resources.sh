@@ -25,7 +25,9 @@ fi
 
 for dockerfile in $(ls -d concourse-$dependency/*/Dockerfile); do
   for version_prefix in $(basename $(dirname $dockerfile)); do
+    echo "Checking $version_prefix of $dockerfile"
     latest_version=$version_prefix$(echo "$dependencies" | jq -r ".[].version | scan(\"^$version_prefix(.*)\")[0]" | sort -r | head -n 1)
+    echo "Latest version $latest_version"
     latest_dep=$(echo "$dependencies" | jq -r --arg dep $dependency --arg version $latest_version '.[] | select(.name == $dep and .version == $version)')
 
     sed -i "s%^ENV ${dockerfile_dep_prefix}_VERSION.*$%ENV ${dockerfile_dep_prefix}_VERSION $latest_version%" $dockerfile
