@@ -42,7 +42,7 @@ jobs:
           inputs: [ { name: git }, { name: upstream } ]
           outputs: [ { name: pushme } ]
           run:
-            path: sh
+            path: bash
             args:
             - -ce
             - |
@@ -52,9 +52,11 @@ jobs:
               echo "FROM gcr.io/cloudshell-images/cloudshell@${digest}" > Dockerfile.new
               tail -n+2 Dockerfile >> Dockerfile.new
               mv Dockerfile.new Dockerfile
-              git add Dockerfile
-              git config user.name "CI Bot" && git config user.email "ci@starkandwayne.com"
-              git commit -m "Updated upstream cloudshell image to: ${digest}"
+              if [[ "$(git status -s)X" != "X" ]]; then
+                git add Dockerfile
+                git config user.name "CI Bot" && git config user.email "ci@starkandwayne.com"
+                git commit -m "Updated upstream cloudshell image to: ${digest}"
+              fi
       - put: git
         resource: 'gcp-cloudshell:latest @github'
         params:
