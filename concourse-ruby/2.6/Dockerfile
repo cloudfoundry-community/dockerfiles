@@ -11,6 +11,8 @@ RUN mkdir -p /usr/local/etc \
 ENV RUBY_MAJOR 2.6
 ENV RUBY_VERSION 2.6.3
 ENV RUBY_DOWNLOAD_SHA256 577fd3795f22b8d91c1d4e6733637b0394d4082db659fccf224c774a2b1c82fb
+# ENV RUBY_URL https://buildpacks.cloudfoundry.org/dependencies/ruby/ruby-2.6.3-linux-x64-cflinuxfs3-5f783afa.tgz
+# ENV RUBY_SHA256 040d6b6f34a246e08468d32fa47fd5f5088aea72ed9dd441c9c5b4922b596cc9
 
 # some of ruby's build scripts are written in ruby
 #   we purge system ruby later to make sure our final image uses what we just built

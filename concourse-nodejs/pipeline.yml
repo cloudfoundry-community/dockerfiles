@@ -1,0 +1,48 @@
+---
+groups:
+  - name: concourse-nodejs
+    jobs:
+      - (( append ))
+      - 'bump-nodejs-versions'
+
+resources:
+  - name: 'nodejs-buildpack'
+    .: (( inject meta.resources.github-release ))
+    source:
+      owner: cloudfoundry
+      repository: nodejs-buildpack
+
+  - name: git
+    .: (( inject meta.resources.dockerfiles ))
+
+jobs:
+  - name: 'bump-nodejs-versions'
+    public: true
+    plan:
+      - { get: git }
+      - { get: buildpack, resource: 'nodejs-buildpack', trigger: true }
+      - task: bump
+        config:
+          platform: linux
+          image_resource:
+            type: docker-image
+            source:
+              repository: starkandwayne/concourse
+              tag: latest
+          inputs:
+          - name: git
+          - name: buildpack
+          outputs:
+          - name: pushme
+          run:
+            path: git/ci/scripts/update-dockerfile-from-buildpack-resources.sh
+          params:
+            buildpack: buildpack/nodejs-buildpack-cflinuxfs3-*.zip
+            dependency: nodejs
+            dockerfile_dep_prefix: NODE
+            git_email: (( grab meta.git.email ))
+            git_name:  (( grab meta.git.name ))
+      - put: git
+        params:
+          rebase: true
+          repository: pushme

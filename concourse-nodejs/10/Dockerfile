@@ -1,5 +1,7 @@
 FROM starkandwayne/concourse
 
+ENV NODE_VERSION 10
+
 RUN set -ex \
 	\
   apt-get install -y apt-transport-https && \
