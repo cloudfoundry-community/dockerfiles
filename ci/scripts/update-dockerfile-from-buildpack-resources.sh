@@ -7,6 +7,7 @@ root="$( cd "$( dirname "${BASH_SOURCE[0]}" )/../.." && pwd )"
 : ${buildpack:?required: path/to/buildpack.zip or "path/to/buildpack-*.zip"}
 : ${dependency:?required: e.g. go, ruby, java}
 : ${dockerfile_dep_prefix:?required: e.g. GOLANG, RUBY}
+dockerfile_name=${dockerfile_name:-$dependency}
 
 [[ -f $(eval ls $buildpack) ]] || { echo "pass path to buildpack.zip; bad parameter: '$buildpack'"; exit 1; }
 
@@ -23,7 +24,7 @@ if [[ -z $(git config --global user.name) ]]; then
   git config --global user.name "${git_name}"
 fi
 
-for dockerfile in $(ls -d concourse-$dependency/*/Dockerfile); do
+for dockerfile in $(ls -d concourse-$dockerfile_name/*/Dockerfile); do
   for version_prefix in $(basename $(dirname $dockerfile)); do
     echo "Checking $version_prefix of $dockerfile"
     latest_version=$version_prefix$(echo "$dependencies" | jq -r ".[].version | scan(\"^$version_prefix(.*)\")[0]" | sort -r | head -n 1)
