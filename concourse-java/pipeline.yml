@@ -45,9 +45,6 @@ jobs:
             args:
             - -ce
             - |
-              git clone $root pushme
-              cd pushme
-
               if [[ -z $(git config --global user.email) ]]; then
                 git config --global user.email "${git_email}"
               fi
@@ -56,6 +53,10 @@ jobs:
               fi
 
               buildpack_version=$(cat buildpack/version)
+
+              git clone ./git pushme
+              cd pushme
+
               for dockerfile in $(ls -d concourse-$name/*/Dockerfile); do
                 for version_prefix in $(basename $(dirname $dockerfile)); do
                   sed -i "s%^ENV ${dep_prefix}_BUILDPACK.*$%ENV ${dep_prefix}_BUILDPACK $buildpack_version%" $dockerfile
