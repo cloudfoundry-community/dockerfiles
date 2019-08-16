@@ -17,12 +17,6 @@ resources:
       repository: (( concat meta.dockerhub.account "/concourse-go" ))
       tag: "1.12"
 
-  - name: 'go-buildpack'
-    .: (( inject meta.resources.github-release ))
-    source:
-      owner: cloudfoundry
-      repository: go-buildpack
-
 jobs:
   - name: 'build-concourse-go:1.12'
     public: true
