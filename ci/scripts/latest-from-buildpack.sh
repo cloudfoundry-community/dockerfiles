@@ -5,9 +5,9 @@ set -eu
 buildpack=$1   # path/to/buildpack.zip
 dependency=$2 # e.g. go, ruby, java
 version_prefix=$3 # e.g. 1.12.
-[[ -f $buildpack ]] || { echo "pass path to buildpack.zip"; exit 1; }
+[[ -f $(eval ls $buildpack) ]] || { echo "pass path to buildpack.zip; bad parameter: '$buildpack'"; exit 1; }
 
-manifest=$(unzip -p $buildpack manifest.yml)
+manifest=$(unzip -p $(eval ls $buildpack) manifest.yml)
 dependencies=$(spruce json <(echo "$manifest") | jq -r --arg dep $dependency '.dependencies | map(select(.name == $dep))')
 latest_version=$version_prefix$(echo "$dependencies" | jq -r ".[].version | scan(\"^$version_prefix(.*)\")[0]" | sort -r | head -n 1)
 latest_dep=$(echo "$dependencies" | jq -r --arg dep $dependency --arg version $latest_version '.[] | select(.name == $dep and .version == $version)')
