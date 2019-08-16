@@ -40,3 +40,7 @@ jobs:
             buildpack: buildpack/go-buildpack-cflinuxfs3-*.zip
             dependency: go
             dockerfile_dep_prefix: GOLANG
+      - put: git
+        params:
+          rebase: true
+          repository: pushme
