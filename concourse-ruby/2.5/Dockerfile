@@ -10,7 +10,6 @@ RUN mkdir -p /usr/local/etc \
 # https://www.ruby-lang.org/en/downloads/
 ENV RUBY_MAJOR 2.5
 ENV RUBY_VERSION 2.5.5
-ENV RUBY_DOWNLOAD_SHA256 28a945fdf340e6ba04fc890b98648342e3cccfd6d223a48f3810572f11b2514c
 
 # some of ruby's build scripts are written in ruby
 #   we purge system ruby later to make sure our final image uses what we just built
@@ -32,7 +31,6 @@ RUN set -ex \
 	&& rm -rf /var/lib/apt/lists/* \
 	\
 	&& wget -O ruby.tar.gz "https://cache.ruby-lang.org/pub/ruby/${RUBY_MAJOR%-rc}/ruby-$RUBY_VERSION.tar.gz" \
-	&& echo "$RUBY_DOWNLOAD_SHA256 *ruby.tar.gz" | sha256sum -c - \
 	\
 	&& mkdir -p /usr/src/ruby \
 	&& tar -xzf ruby.tar.gz -C /usr/src/ruby --strip-components=1 \

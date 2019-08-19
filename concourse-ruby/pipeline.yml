@@ -1,26 +1,26 @@
 ---
 groups:
-  - name: concourse-nodejs
+  - name: concourse-ruby
     jobs:
       - (( append ))
-      - 'bump-nodejs-versions'
+      - 'bump-ruby-versions'
 
 resources:
-  - name: 'nodejs-buildpack'
+  - name: 'ruby-buildpack'
     .: (( inject meta.resources.github-release ))
     source:
       owner: cloudfoundry
-      repository: nodejs-buildpack
+      repository: ruby-buildpack
 
   - name: git
     .: (( inject meta.resources.dockerfiles ))
 
 jobs:
-  - name: 'bump-nodejs-versions'
+  - name: 'bump-ruby-versions'
     public: true
     plan:
       - { get: git }
-      - { get: buildpack, resource: 'nodejs-buildpack', trigger: true }
+      - { get: buildpack, resource: 'ruby-buildpack', trigger: true }
       - task: bump
         config:
           platform: linux
@@ -37,10 +37,9 @@ jobs:
           run:
             path: git/ci/scripts/update-dockerfile-from-buildpack-resources.sh
           params:
-            buildpack: buildpack/nodejs_buildpack-cflinuxfs3-*.zip
-            dependency: node
-            dockerfile_name: nodejs
-            dockerfile_dep_prefix: NODE
+            buildpack: buildpack/ruby-buildpack-cflinuxfs3-*.zip
+            dependency: ruby
+            dockerfile_dep_prefix: RUBY
             git_email: (( grab meta.git.email ))
             git_name:  (( grab meta.git.name ))
       - put: git
