@@ -10,6 +10,7 @@ resources:
     .: (( inject meta.resources.git ))
     source:
       uri: https://github.com/cloudfoundry/go-buildpack.git
+      check_every: 1h
 
   - name: git
     .: (( inject meta.resources.dockerfiles ))

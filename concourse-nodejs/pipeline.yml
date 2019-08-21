@@ -10,6 +10,8 @@ resources:
     .: (( inject meta.resources.git ))
     source:
       uri: https://github.com/cloudfoundry/nodejs-buildpack.git
+      check_every: 1h
+
 
   - name: git
     .: (( inject meta.resources.dockerfiles ))
