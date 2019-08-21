@@ -23,6 +23,7 @@ if [[ -z $(git config --global user.name) ]]; then
   git config --global user.name "${git_name}"
 fi
 
+exit 1
 for dockerfile in $(ls -d concourse-$dockerfile_name/*/Dockerfile); do
   for version_prefix in $(basename $(dirname $dockerfile)); do
     echo "Checking $version_prefix of $dockerfile"
