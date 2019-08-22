@@ -7,10 +7,11 @@ groups:
 
 resources:
   - name: 'nodejs-buildpack'
-    .: (( inject meta.resources.github-release ))
+    .: (( inject meta.resources.git ))
     source:
-      owner: cloudfoundry
-      repository: nodejs-buildpack
+      uri: https://github.com/cloudfoundry/nodejs-buildpack.git
+      check_every: 1h
+
 
   - name: git
     .: (( inject meta.resources.dockerfiles ))
@@ -35,9 +36,9 @@ jobs:
           outputs:
           - name: pushme
           run:
-            path: git/ci/scripts/update-dockerfile-from-buildpack-resources.sh
+            path: git/ci/scripts/update-dockerfile-from-buildpack-git.sh
           params:
-            buildpack: buildpack/nodejs_buildpack-cflinuxfs3-*.zip
+            buildpack: buildpack
             dependency: node
             dockerfile_name: nodejs
             dockerfile_dep_prefix: NODE
