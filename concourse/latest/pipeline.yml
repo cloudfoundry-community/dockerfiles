@@ -19,6 +19,11 @@ resources:
       repository: (( concat meta.dockerhub.account "/concourse" ))
       tag: latest
 
+  - name: 'concourse:latest weekly'
+    type: time
+    source:
+      interval: 168h
+
 jobs:
   - name: 'build-concourse:latest'
     public: true
@@ -26,6 +31,8 @@ jobs:
       - get: git
         resource: 'concourse:latest @github'
         trigger:  true
+      - get: 'concourse:latest weekly'
+        trigger: true
       - put: 'concourse:latest @dockerhub'
         params:
           build: git/concourse/latest
