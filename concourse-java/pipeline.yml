@@ -11,6 +11,7 @@ resources:
     source:
       owner: cloudfoundry
       repository: java-buildpack
+      check_every: 1h
 
   - name: git
     .: (( inject meta.resources.dockerfiles ))

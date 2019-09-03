@@ -7,10 +7,10 @@ groups:
 
 resources:
   - name: 'go-buildpack'
-    .: (( inject meta.resources.github-release ))
+    .: (( inject meta.resources.git ))
     source:
-      owner: cloudfoundry
-      repository: go-buildpack
+      uri: https://github.com/cloudfoundry/go-buildpack.git
+      check_every: 1h
 
   - name: git
     .: (( inject meta.resources.dockerfiles ))
@@ -35,9 +35,9 @@ jobs:
           outputs:
           - name: pushme
           run:
-            path: git/ci/scripts/update-dockerfile-from-buildpack-resources.sh
+            path: git/ci/scripts/update-dockerfile-from-buildpack-git.sh
           params:
-            buildpack: buildpack/go-buildpack-cflinuxfs3-*.zip
+            buildpack: buildpack
             dependency: go
             dockerfile_dep_prefix: GOLANG
             git_email: (( grab meta.git.email ))

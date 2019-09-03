@@ -45,6 +45,11 @@ meta:
       source:
         access_token: (( grab meta.github.access_token ))
 
+    git:
+      type: git
+      source:
+        private_key: (( grab meta.github.key ))
+
 groups:
   - name: '*'
     jobs: (( grab groups.concourse.jobs groups.concourse-go.jobs groups.concourse-java.jobs groups.concourse-ruby.jobs groups.concourse-nodejs.jobs groups.concourse-kubernetes.jobs groups.gcp-cloudshell.jobs ))
