@@ -9,7 +9,7 @@ RUN mkdir -p /usr/local/etc \
 
 # https://www.ruby-lang.org/en/downloads/
 ENV RUBY_MAJOR 2.4
-ENV RUBY_VERSION 2.4.6
+ENV RUBY_VERSION 2.4.8
 
 # some of ruby's build scripts are written in ruby
 #   we purge system ruby later to make sure our final image uses what we just built
