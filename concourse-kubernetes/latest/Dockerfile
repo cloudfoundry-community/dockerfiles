@@ -21,7 +21,6 @@ RUN apt-get update \
       file \
       jq \
       kubectl \
-      knctl \
       unzip \
     && rm -rf /var/lib/apt/lists/* \
     && HELM_VERSION=$(curl -s https://api.github.com/repos/helm/helm/releases/latest | jq -r ".tag_name") \
@@ -30,8 +29,7 @@ RUN apt-get update \
     && mv linux-amd64/helm  /usr/local/bin \
     && rm -f tar xfz helm-*.tar.gz \
     && helm version --client \
-    && helm init --client-only \
-    && helm plugin install https://github.com/hypnoglow/helm-s3.git
+    && helm init --client-only
 
 # Add a user for running things as non-superuser
 RUN useradd -ms /bin/bash worker
