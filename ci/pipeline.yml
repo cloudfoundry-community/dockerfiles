@@ -12,12 +12,12 @@ meta:
     password: ((gcr-service-account-key))
 
   github:
-    key: ((github-private-key))
-    access_token: ((github-access-token))
+    key: ((github.private-key))
+    access_token: ((github.access-token))
 
   git:
-    email: ((git-commit-email))
-    name:  ((git-commit-name))
+    email: ci@starkandwayne.com
+    name:  CI Bot
 
   resources:
     dockerfiles:
