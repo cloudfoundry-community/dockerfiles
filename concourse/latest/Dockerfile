@@ -6,6 +6,7 @@ ENV VAULT_VERSION=1.2.2
 # COLUMNS var added to work around bosh cli needing a terminal size specified
 
 # base packages
+ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update \
     && apt-get install -yy wget gnupg \
     && wget -q -O - https://raw.githubusercontent.com/starkandwayne/homebrew-cf/master/public.key | apt-key add - \
@@ -29,7 +30,7 @@ RUN apt-get update \
       file \
       jq \
       kubectl \
-      libreadline7 \
+      libreadline8 \
       libreadline-dev \
       libsqlite3-dev \
       libssl-dev \
@@ -71,7 +72,7 @@ RUN curl -L >hugo.tar.gz https://github.com/gohugoio/hugo/releases/download/v0.3
  && rm hugo.tar.gz
 
 # Rubygems
-RUN gem install cf-uaac fpm deb-s3 --no-ri --no-rdoc
+RUN gem install cf-uaac fpm deb-s3 --no-document
 
 # Add a user for running things as non-superuser
 RUN useradd -ms /bin/bash worker
