@@ -14,6 +14,7 @@ RUN apt-get update \
       bzip2 \
       certstrap \
       cf-cli \
+      cf7-cli \
       concourse-fly \
       credhub-cli \
       curl \
