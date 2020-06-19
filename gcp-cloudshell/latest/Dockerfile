@@ -65,3 +65,7 @@ RUN curl -L https://k14s.io/install.sh | bash
 RUN curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | bash && \
     apt-get install git-lfs && \
     git lfs install
+
+# Install gluon CLI
+RUN curl -Lo /usr/bin/gluon https://raw.githubusercontent.com/starkandwayne/gluon/master/bin/gluon \
+ && chmod 0755 /usr/bin/gluon
