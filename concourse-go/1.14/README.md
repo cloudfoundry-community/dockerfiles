@@ -19,6 +19,8 @@ The following useful tools are installed by default:
 - [golint][golint] - A linter for Go source code
 - [godep][godep] - Dependency management utility for Go projects
 - [goxc][goxc] - Go cross-compiler
+- [ginko][ginko] - a Go testing framework
+- [gomega][gomega] - a matcher/assertion library
 
 
 
@@ -28,3 +30,5 @@ The following useful tools are installed by default:
 [golint]:  https://github.com/golang/lint
 [godep]:   https://github.com/tools/godep
 [goxc]:    https://github.com/laher/goxc
+[ginko]:   https://onsi.github.io/ginkgo
+[gomega]:  https://onsi.github.io/gomega
