@@ -30,4 +30,6 @@ ENV \
 RUN go get golang.org/x/tools/cmd/cover \
  && go get golang.org/x/lint/golint \
  && go get github.com/tools/godep \
- && go get github.com/laher/goxc
+ && go get github.com/laher/goxc \
+ && go get github.com/onsi/ginkgo/ginkgo \
+ && go get github.com/onsi/gomega/... 
