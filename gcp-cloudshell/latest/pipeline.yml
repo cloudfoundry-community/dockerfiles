@@ -1,18 +1,14 @@
 ---
-groups:
-  - name: gcp-cloudshell
-    jobs:
-      - (( append ))
-      - 'bump-upstream-cloudshell:latest'
-
 resources:
-  - name: 'cloudshell:latest @upstream'
+  - name: 'cloudshell_latest_upstream'
+    old_name: 'cloudshell:latest @upstream'
     .: (( inject meta.resources.gcr ))
     source:
       repository: gcr.io/cloudshell-images/cloudshell
       tag: latest
 
-  - name: 'gcp-cloudshell:latest @github'
+  - name: 'gcp-cloudshell_latest_github'
+    old_name: 'gcp-cloudshell:latest @github'
     .: (( inject meta.resources.dockerfiles ))
     source:
       paths:
@@ -20,16 +16,17 @@ resources:
         - gcp-cloudshell/latest/scripts/*
 
 jobs:
-  - name: 'bump-upstream-cloudshell:latest'
+  - name: 'bump-upstream-cloudshell_latest'
+    old_name: 'bump-upstream-cloudshell:latest'
     public: true
     plan:
       - get: upstream
-        resource: 'cloudshell:latest @upstream'
+        resource: 'cloudshell_latest_upstream'
         trigger: true
         params:
           skip_download: true
       - get: git
-        resource: 'gcp-cloudshell:latest @github'
+        resource: 'gcp-cloudshell_latest_github'
         trigger: true
       - task: update-image
         config:
@@ -58,7 +55,7 @@ jobs:
                 git commit -m "Updated upstream cloudshell image to: ${digest}"
               fi
       - put: git
-        resource: 'gcp-cloudshell:latest @github'
+        resource: 'gcp-cloudshell_latest_github'
         params:
           repository: pushme
           merge: true

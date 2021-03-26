@@ -51,12 +51,27 @@ meta:
         private_key: (( grab meta.github.key ))
 
 groups:
-  - name: '*'
-    jobs: (( grab groups.concourse.jobs groups.concourse-go.jobs groups.concourse-java.jobs groups.concourse-ruby.jobs groups.concourse-nodejs.jobs groups.concourse-kubernetes.jobs groups.gcp-cloudshell.jobs ))
+  - name: all
+    jobs:
+    - "*"
   - name: concourse
+    jobs:
+    - "build-concourse_*"
   - name: concourse-go
+    jobs:
+    - "build-concourse-go_*"
   - name: concourse-java
+    jobs:
+    - "build-concourse-java_*"
   - name: concourse-ruby
+    jobs:
+    - "build-concourse-ruby_*"
   - name: concourse-nodejs
+    jobs:
+    - "build-concourse-nodejs_*"
   - name: concourse-kubernetes
+    jobs:
+    - "build-concourse-kubernetes_*"
   - name: gcp-cloudshell
+    jobs:
+    - "bump-upstream-cloudshell_*"

@@ -1,31 +1,28 @@
 ---
-groups:
-  - name: concourse-kubernetes
-    jobs:
-      - (( append ))
-      - 'build-concourse-kubernetes:latest'
-
 resources:
-  - name: 'concourse-kubernetes:latest @github'
+  - name: 'concourse-kubernetes_latest_github'
+    old_name: 'concourse-kubernetes:latest @github'
     .: (( inject meta.resources.dockerfiles ))
     source:
       paths:
         - concourse-kubernetes/latest/Dockerfile
         - concourse-kubernetes/latest/scripts/*
 
-  - name: 'concourse-kubernetes:latest @dockerhub'
+  - name: 'concourse-kubernetes_latest_dockerhub'
+    old_name: 'concourse-kubernetes:latest @dockerhub'
     .: (( inject meta.resources.dockerhub ))
     source:
       repository: (( concat meta.dockerhub.account "/concourse-kubernetes" ))
       tag: latest
 
 jobs:
-  - name: 'build-concourse-kubernetes:latest'
+  - name: 'build-concourse-kubernetes_latest'
+    old_name: 'build-concourse-kubernetes:latest'
     public: true
     plan:
       - get: git
-        resource: 'concourse-kubernetes:latest @github'
+        resource: 'concourse-kubernetes_latest_github'
         trigger:  true
-      - put: 'concourse-kubernetes:latest @dockerhub'
+      - put: 'concourse-kubernetes_latest_dockerhub'
         params:
           build: git/concourse-kubernetes/latest
