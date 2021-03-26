@@ -1,0 +1,29 @@
+---
+groups:
+  - name: concourse-go
+    jobs:
+      - (( append ))
+      - 'build-concourse-go:1.16'
+
+resources:
+  - name: 'concourse-go:1.16 @github'
+    .: (( inject meta.resources.dockerfiles ))
+    source:
+      paths:
+        - concourse-go/1.16/Dockerfile
+  - name: 'concourse-go:1.16 @dockerhub'
+    .: (( inject meta.resources.dockerhub ))
+    source:
+      repository: (( concat meta.dockerhub.account "/concourse-go" ))
+      tag: "1.16"
+
+jobs:
+  - name: 'build-concourse-go:1.16'
+    public: true
+    plan:
+      - { get: git, resource: 'concourse-go:1.16 @github',   trigger: true }
+      - { get: img, resource: 'concourse:latest @dockerhub', trigger: true, passed: ['build-concourse:latest'], params: {skip_download: true} }
+      - put: 'concourse-go:1.16 @dockerhub'
+        params:
+          build: git/concourse-go/1.16
+          tag_as_latest: true
