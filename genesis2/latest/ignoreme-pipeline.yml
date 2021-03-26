@@ -1,20 +1,17 @@
 ---
 resources:
   - name: 'genesis2_latest_github'
-    old_name: 'genesis2:latest @github'
     .: (( inject meta.resources.dockerfiles ))
     source:
       paths:
         - genesis2/latest/Dockerfile
 
   - name: 'genesis2_latest-rc_dockerhub'
-    old_name: 'genesis2:latest-rc @dockerhub'
     .: (( inject meta.resources.dockerhub ))
     source:
       repository: (( concat meta.dockerhub.account "/genesis2" ))
       tag: latest-rc
   - name: 'genesis2_latest_dockerhub'
-    old_name: 'genesis2:latest @dockerhub'
     .: (( inject meta.resources.dockerhub ))
     source:
       repository: (( concat meta.dockerhub.account "/genesis2" ))
@@ -22,7 +19,6 @@ resources:
 
 jobs:
   - name: 'build_genesis2_latest'
-    old_name: 'build genesis2:latest'
     public: true
     plan:
       - get: git
@@ -32,7 +28,6 @@ jobs:
         params:
           build: git/genesis2/latest
   - name: 'promote_genesis2_latest'
-    old_name: 'promote genesis2:latest'
     public: true
     plan:
       - get: rc

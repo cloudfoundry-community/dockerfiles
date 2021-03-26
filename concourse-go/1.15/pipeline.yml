@@ -1,13 +1,11 @@
 ---
 resources:
   - name: 'concourse-go_1.15_github'
-    old_name: 'concourse-go:1.15 @github'
     .: (( inject meta.resources.dockerfiles ))
     source:
       paths:
         - concourse-go/1.15/Dockerfile
   - name: 'concourse-go_1.15_dockerhub'
-    old_name: 'concourse-go:1.15 @github'
     .: (( inject meta.resources.dockerhub ))
     source:
       repository: (( concat meta.dockerhub.account "/concourse-go" ))
@@ -15,7 +13,6 @@ resources:
 
 jobs:
   - name: 'build-concourse-go_1.15'
-    old_name: 'build-concourse-go:1.15'
     public: true
     plan:
       - { get: git, resource: 'concourse-go_1.15_github',   trigger: true }

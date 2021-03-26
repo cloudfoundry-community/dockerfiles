@@ -1,14 +1,12 @@
 ---
 resources:
   - name: 'cloudshell_latest_upstream'
-    old_name: 'cloudshell:latest @upstream'
     .: (( inject meta.resources.gcr ))
     source:
       repository: gcr.io/cloudshell-images/cloudshell
       tag: latest
 
   - name: 'gcp-cloudshell_latest_github'
-    old_name: 'gcp-cloudshell:latest @github'
     .: (( inject meta.resources.dockerfiles ))
     source:
       paths:
@@ -17,7 +15,6 @@ resources:
 
 jobs:
   - name: 'bump-upstream-cloudshell_latest'
-    old_name: 'bump-upstream-cloudshell:latest'
     public: true
     plan:
       - get: upstream

@@ -1,13 +1,11 @@
 ---
 resources:
   - name: 'concourse-java_8_github'
-    old_name: 'concourse-java:8 @github'
     .: (( inject meta.resources.dockerfiles ))
     source:
       paths:
         - concourse-java/8/Dockerfile
   - name: 'concourse-java_8_dockerhub'
-    old_name: 'concourse-java:8 @dockerhub'
     .: (( inject meta.resources.dockerhub ))
     source:
       repository: (( concat meta.dockerhub.account "/concourse-java" ))
@@ -15,7 +13,6 @@ resources:
 
 jobs:
   - name: 'build-concourse-java_8'
-    old_name: 'build-concourse-java:8'
     public: true
     plan:
       - { get: git, resource: 'concourse-java_8_github',    trigger: true }

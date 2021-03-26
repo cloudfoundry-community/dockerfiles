@@ -1,7 +1,6 @@
 ---
 resources:
   - name: 'concourse-kubernetes_latest_github'
-    old_name: 'concourse-kubernetes:latest @github'
     .: (( inject meta.resources.dockerfiles ))
     source:
       paths:
@@ -9,7 +8,6 @@ resources:
         - concourse-kubernetes/latest/scripts/*
 
   - name: 'concourse-kubernetes_latest_dockerhub'
-    old_name: 'concourse-kubernetes:latest @dockerhub'
     .: (( inject meta.resources.dockerhub ))
     source:
       repository: (( concat meta.dockerhub.account "/concourse-kubernetes" ))
@@ -17,7 +15,6 @@ resources:
 
 jobs:
   - name: 'build-concourse-kubernetes_latest'
-    old_name: 'build-concourse-kubernetes:latest'
     public: true
     plan:
       - get: git

@@ -1,7 +1,6 @@
 ---
 resources:
   - name: 'concourse_latest_github'
-    old_name: 'concourse:latest @github'
     .: (( inject meta.resources.dockerfiles ))
     source:
       paths:
@@ -9,21 +8,18 @@ resources:
         - concourse/latest/scripts/*
 
   - name: 'concourse_latest_dockerhub'
-    old_name: 'concourse:latest @dockerhub'
     .: (( inject meta.resources.dockerhub ))
     source:
       repository: (( concat meta.dockerhub.account "/concourse" ))
       tag: latest
 
   - name: 'concourse_latest_weekly'
-    old_name: 'concourse:latest weekly'
     type: time
     source:
       interval: 168h
 
 jobs:
   - name: 'build-concourse_latest'
-    old_name: 'build-concourse:latest'
     public: true
     plan:
       - get: git
