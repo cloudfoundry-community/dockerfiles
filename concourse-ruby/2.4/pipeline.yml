@@ -1,29 +1,23 @@
 ---
-groups:
-  - name: concourse-ruby
-    jobs:
-      - (( append ))
-      - 'build-concourse-ruby:2.4'
-
 resources:
-  - name: 'concourse-ruby:2.4 @github'
+  - name: 'concourse-ruby_2.4_github'
     .: (( inject meta.resources.dockerfiles ))
     source:
       paths:
         - concourse-ruby/2.4/Dockerfile
-  - name: 'concourse-ruby:2.4 @dockerhub'
+  - name: 'concourse-ruby_2.4_dockerhub'
     .: (( inject meta.resources.dockerhub ))
     source:
       repository: (( concat meta.dockerhub.account "/concourse-ruby" ))
       tag: "2.4"
 
 jobs:
-  - name: 'build-concourse-ruby:2.4'
+  - name: 'build-concourse-ruby_2.4'
     public: true
     plan:
-      - { get: git, resource: 'concourse-ruby:2.4 @github',    trigger: true }
-      - { get: img, resource: 'concourse:latest @dockerhub', trigger: true, passed: ['build-concourse:latest'], params: {skip_download: true} }
-      - put: 'concourse-ruby:2.4 @dockerhub'
+      - { get: git, resource: 'concourse-ruby_2.4_github',    trigger: true }
+      - { get: img, resource: 'concourse_latest_dockerhub', trigger: true, passed: ['build-concourse_latest'], params: {skip_download: true} }
+      - put: 'concourse-ruby_2.4_dockerhub'
         params:
           build: git/concourse-ruby/2.4
           tag_as_latest: true

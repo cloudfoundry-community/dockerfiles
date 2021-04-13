@@ -1,46 +1,39 @@
 ---
-groups:
-  - name: genesis2
-    jobs:
-      - (( append ))
-      - 'build genesis2:latest'
-      - 'promote genesis2:latest'
-
 resources:
-  - name: 'genesis2:latest @github'
+  - name: 'genesis2_latest_github'
     .: (( inject meta.resources.dockerfiles ))
     source:
       paths:
         - genesis2/latest/Dockerfile
 
-  - name: 'genesis2:latest-rc @dockerhub'
+  - name: 'genesis2_latest-rc_dockerhub'
     .: (( inject meta.resources.dockerhub ))
     source:
       repository: (( concat meta.dockerhub.account "/genesis2" ))
       tag: latest-rc
-  - name: 'genesis2:latest @dockerhub'
+  - name: 'genesis2_latest_dockerhub'
     .: (( inject meta.resources.dockerhub ))
     source:
       repository: (( concat meta.dockerhub.account "/genesis2" ))
       tag: latest
 
 jobs:
-  - name: 'build genesis2:latest'
+  - name: 'build_genesis2_latest'
     public: true
     plan:
       - get: git
-        resource: 'genesis2:latest @github'
+        resource: 'genesis2:latest_github'
         trigger:  true
-      - put: 'genesis2:latest-rc @dockerhub'
+      - put: 'genesis2:latest-rc_dockerhub'
         params:
           build: git/genesis2/latest
-  - name: 'promote genesis2:latest'
+  - name: 'promote_genesis2_latest'
     public: true
     plan:
       - get: rc
-        resource: 'genesis2:latest-rc @dockerhub'
+        resource: 'genesis2_latest-rc_dockerhub'
         passed: ['build genesis2:latest']
         params: { save: true }
-      - put: 'genesis2:latest @dockerhub'
+      - put: 'genesis2_latest_dockerhub'
         params:
-          load:       rc
+          load: rc

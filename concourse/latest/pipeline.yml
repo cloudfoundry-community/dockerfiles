@@ -1,39 +1,33 @@
 ---
-groups:
-  - name: concourse
-    jobs:
-      - (( append ))
-      - 'build-concourse:latest'
-
 resources:
-  - name: 'concourse:latest @github'
+  - name: 'concourse_latest_github'
     .: (( inject meta.resources.dockerfiles ))
     source:
       paths:
         - concourse/latest/Dockerfile
         - concourse/latest/scripts/*
 
-  - name: 'concourse:latest @dockerhub'
+  - name: 'concourse_latest_dockerhub'
     .: (( inject meta.resources.dockerhub ))
     source:
       repository: (( concat meta.dockerhub.account "/concourse" ))
       tag: latest
 
-  - name: 'concourse:latest weekly'
+  - name: 'concourse_latest_weekly'
     type: time
     source:
       interval: 168h
 
 jobs:
-  - name: 'build-concourse:latest'
+  - name: 'build-concourse_latest'
     public: true
     plan:
       - get: git
-        resource: 'concourse:latest @github'
+        resource: 'concourse_latest_github'
         trigger:  true
-      - get: 'concourse:latest weekly'
+      - get: 'concourse_latest_weekly'
         trigger: true
-      - put: 'concourse:latest @dockerhub'
+      - put: 'concourse_latest_dockerhub'
         params:
           build: git/concourse/latest
           tag_as_latest: true

@@ -1,29 +1,23 @@
 ---
-groups:
-  - name: concourse-nodejs
-    jobs:
-      - (( append ))
-      - 'build-concourse-nodejs:14'
-
 resources:
-  - name: 'concourse-nodejs:14 @github'
+  - name: 'concourse-nodejs_14_github'
     .: (( inject meta.resources.dockerfiles ))
     source:
       paths:
         - concourse-nodejs/14/Dockerfile
-  - name: 'concourse-nodejs:14 @dockerhub'
+  - name: 'concourse-nodejs_14_dockerhub'
     .: (( inject meta.resources.dockerhub ))
     source:
       repository: (( concat meta.dockerhub.account "/concourse-nodejs" ))
       tag: "14"
 
 jobs:
-  - name: 'build-concourse-nodejs:14'
+  - name: 'build-concourse-nodejs_14'
     public: true
     plan:
-      - { get: git, resource: 'concourse-nodejs:14 @github',    trigger: true }
-      - { get: img, resource: 'concourse:latest @dockerhub', trigger: true, passed: ['build-concourse:latest'], params: {skip_download: true} }
-      - put: 'concourse-nodejs:14 @dockerhub'
+      - { get: git, resource: 'concourse-nodejs_14_github',    trigger: true }
+      - { get: img, resource: 'concourse_latest_dockerhub', trigger: true, passed: ['build-concourse_latest'], params: {skip_download: true} }
+      - put: 'concourse-nodejs_14_dockerhub'
         params:
           build: git/concourse-nodejs/14
           tag_as_latest: true
