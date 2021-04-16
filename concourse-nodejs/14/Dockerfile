@@ -1,6 +1,6 @@
 FROM starkandwayne/concourse
 
-ENV NODE_VERSION 14.16.0
+ENV NODE_VERSION 14.16.1
 
 RUN set -ex \
 	\
