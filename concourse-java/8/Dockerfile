@@ -2,7 +2,7 @@ FROM starkandwayne/concourse
 
 # https://github.com/cloudfoundry/java-buildpack does not have a manifest.yml
 # so just bumping the java-buildpack version so as to trigger update of docker image
-ENV JAVA_BUILDPACK 4.38
+ENV JAVA_BUILDPACK 4.39
 
 # base packages
 RUN apt-get update && \
