@@ -31,6 +31,7 @@ RUN apt-get update \
       file \
       jq \
       kubectl \
+      libc6 \
       libreadline8 \
       libreadline-dev \
       libsqlite3-dev \
