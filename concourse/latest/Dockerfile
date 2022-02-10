@@ -1,7 +1,7 @@
 FROM ubuntu
 
 ENV COLUMNS=80
-ENV VAULT_VERSION=1.2.2
+ENV VAULT_VERSION=1.9.3
 
 # COLUMNS var added to work around bosh cli needing a terminal size specified
 
