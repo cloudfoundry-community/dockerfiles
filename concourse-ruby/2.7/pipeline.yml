@@ -1,23 +1,23 @@
 ---
 resources:
-  - name: 'concourse-ruby_2.7_github'
+  - name: 'concourse-ruby_2_7_github'
     .: (( inject meta.resources.dockerfiles ))
     source:
       paths:
         - concourse-ruby/2.7/Dockerfile
-  - name: 'concourse-ruby_2.7_dockerhub'
+  - name: 'concourse-ruby_2_7_dockerhub'
     .: (( inject meta.resources.dockerhub ))
     source:
       repository: (( concat meta.dockerhub.account "/concourse-ruby" ))
       tag: "2.7"
 
 jobs:
-  - name: 'build-concourse-ruby_2.7'
+  - name: 'build-concourse-ruby_2_7'
     public: true
     plan:
-      - { get: git, resource: 'concourse-ruby_2.7_github',    trigger: true }
+      - { get: git, resource: 'concourse-ruby_2_7_github',    trigger: true }
       - { get: img, resource: 'concourse_latest_dockerhub', trigger: true, passed: ['build-concourse_latest'], params: {skip_download: true} }
-      - put: 'concourse-ruby_2.7_dockerhub'
+      - put: 'concourse-ruby_2_7_dockerhub'
         params:
           build: git/concourse-ruby/2.7
           tag_as_latest: true
