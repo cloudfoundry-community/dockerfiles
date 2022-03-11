@@ -1,0 +1,24 @@
+---
+resources:
+  - name: 'concourse-go_shield_github'
+    .: (( inject meta.resources.dockerfiles ))
+    source:
+      paths:
+        - concourse-go/shield/Dockerfile
+  - name: 'concourse-go_shield_dockerhub'
+    .: (( inject meta.resources.dockerhub ))
+    source:
+      repository: (( concat meta.dockerhub.account "/concourse-go" ))
+      tag: "shield"
+
+jobs:
+  - name: 'build-concourse-go_shield'
+    public: true
+    plan:
+      - { get: git, resource: 'concourse-go_shield_github',   trigger: true }
+      - { get: img, resource: 'concourse_latest_dockerhub', trigger: true, passed: ['build-concourse_latest'], params: {skip_download: true} }
+      - put: 'concourse-go_shield_dockerhub'
+        params:
+          build: git/concourse-go/shield
+          tag_as_latest: true
+
