@@ -8,14 +8,14 @@ ENV VAULT_VERSION=1.9.3
 # base packages
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update \
-    && apt-get install -yy wget gnupg \
+    && apt-get install -y wget gnupg \
     apt-transport-https ca-certificates \
-    libreadline8 \
+    libreadline-dev\
     && wget -q -O - https://raw.githubusercontent.com/starkandwayne/homebrew-cf/master/public.key | apt-key add - \
     && echo "deb http://apt.starkandwayne.com stable main" | tee /etc/apt/sources.list.d/starkandwayne.list \
     && wget -q -O - https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - \
     && echo "deb http://apt.kubernetes.io/ kubernetes-xenial main" | tee -a /etc/apt/sources.list.d/kubernetes.list \
-    && apt-get update && apt-get install -yy \
+    && apt-get update && apt-get install -y \
       autoconf \
       bosh-cli \
       build-essential \
@@ -34,7 +34,7 @@ RUN apt-get update \
       jq \
       kubectl \
       libc6 \
-      libreadline8 \
+      libreadline  \
       libreadline-dev \
       libsqlite3-dev \
       libssl-dev \
