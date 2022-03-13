@@ -11,7 +11,6 @@ RUN apt-get update \
     && apt-get install -y wget gnupg \
     apt-transport-https ca-certificates \
     libreadline-dev \
-    libreadline \
     && wget -q -O - https://raw.githubusercontent.com/starkandwayne/homebrew-cf/master/public.key | apt-key add - \
     && echo "deb http://apt.starkandwayne.com stable main" | tee /etc/apt/sources.list.d/starkandwayne.list \
     && wget -q -O - https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - \
