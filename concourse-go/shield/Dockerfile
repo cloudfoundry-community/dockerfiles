@@ -9,6 +9,7 @@ ENV VAULT_VERSION=1.9.3
 
 # base packages
 ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get install -y software-properties-common 
 RUN apt-get update \
     && apt-get install -y wget gnupg \
     apt-transport-https ca-certificates \
@@ -18,6 +19,7 @@ RUN apt-get update \
     && echo "deb http://apt.starkandwayne.com stable main" | tee /etc/apt/sources.list.d/starkandwayne.list \
     && wget -q -O - https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - \
     && echo "deb http://apt.kubernetes.io/ kubernetes-xenial main" | tee -a /etc/apt/sources.list.d/kubernetes.list \
+    && apt-add-repository ppa:brightbox/ruby-ng \
     && apt-get update && apt-get install -y \
       autoconf \
       bosh-cli \
