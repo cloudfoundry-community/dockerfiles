@@ -53,6 +53,7 @@ RUN apt-get update \
       unzip \
       zlib1g-dev \
       zlibc \
+      snapd
     && rm -rf /var/lib/apt/lists/*
 
 RUN snap install ruby --classic
