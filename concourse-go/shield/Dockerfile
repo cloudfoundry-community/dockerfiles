@@ -44,8 +44,6 @@ RUN apt-get update \
       om \
       openssl \
       pivnet-cli \
-      ruby \
-      ruby-dev \
       safe \
       sipcalc \
       spruce \
@@ -56,6 +54,8 @@ RUN apt-get update \
       zlib1g-dev \
       zlibc \
     && rm -rf /var/lib/apt/lists/*
+
+RUN snap install ruby --classic
 
 RUN curl -Lo vault.zip https://releases.hashicorp.com/vault/${VAULT_VERSION}/vault_${VAULT_VERSION}_linux_amd64.zip \
     && unzip vault.zip \
