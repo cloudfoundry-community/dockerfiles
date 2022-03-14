@@ -57,6 +57,7 @@ RUN apt-get update \
       unzip \
       zlib1g-dev \
       zlibc \
+      ruby-devel \
     && rm -rf /var/lib/apt/lists/*
 
 
