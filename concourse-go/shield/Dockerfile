@@ -15,6 +15,7 @@ RUN apt-get update \
     && echo "deb http://apt.starkandwayne.com stable main" | tee /etc/apt/sources.list.d/starkandwayne.list \
     && wget -q -O - https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - \
     && echo "deb http://apt.kubernetes.io/ kubernetes-xenial main" | tee -a /etc/apt/sources.list.d/kubernetes.list \
+    && apt-add-repository ppa:brightbox/ruby-ng \
     && apt-get update && apt-get install -y \
       autoconf \
       bosh-cli \
@@ -53,7 +54,7 @@ RUN apt-get update \
       unzip \
       zlib1g-dev \
       zlibc \
-      snapd \
+      ruby2.4 \
     && rm -rf /var/lib/apt/lists/*
 
 RUN snap install ruby --classic
