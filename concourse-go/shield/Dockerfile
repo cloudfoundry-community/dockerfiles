@@ -57,7 +57,6 @@ RUN apt-get update \
       unzip \
       zlib1g-dev \
       zlibc \
-      ruby-dev \
     && rm -rf /var/lib/apt/lists/*
 
 
@@ -78,7 +77,6 @@ RUN curl -L >hugo.tar.gz https://github.com/gohugoio/hugo/releases/download/v0.3
  && rm hugo.tar.gz
 
 # Rubygems
-RUN gem install cf-uaac fpm deb-s3 --no-document
 
 # Add a user for running things as non-superuser
 RUN useradd -ms /bin/bash worker
