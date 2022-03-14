@@ -63,34 +63,7 @@ RUN curl -Lo vault.zip https://releases.hashicorp.com/vault/${VAULT_VERSION}/vau
     && chmod 0755 /usr/bin/vault \
     && rm vault.zip
 
-USER root
-RUN apt-get update && apt-get install bzr gcc -y
 
-ENV GOLANG_VERSION 1.17.7
-ENV GOLANG_URL https://buildpacks.cloudfoundry.org/dependencies/go/go_1.17.7_linux_x64_cflinuxfs3_e8cf2ae0.tgz
-ENV GOLANG_SHA256 e8cf2ae04da5a64fd1e7d88e66c533802a9406303148904eb87d188314cf56fb
-
-RUN \
-  mkdir -p /goroot /gopath  && \
-  curl $GOLANG_URL | \
-  tar xvzf - -C /goroot --strip-components=1 && \
-  chown -R worker /goroot /gopath
-
-RUN go get golang.org/x/tools/cmd/cover \
- && go get golang.org/x/lint/golint \
- && go get github.com/tools/godep \
- && go get github.com/laher/goxc \
- && go get github.com/onsi/ginkgo/ginkgo \
- && go get github.com/onsi/gomega/... 
-
-
-# Set environment variables.
-ENV \
-  GOROOT=/goroot \
-  GOPATH=/gopath \
-  PATH=/goroot/bin:/gopath/bin:$PATH
-
-# Install git-lfs
 RUN curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | bash && \
     apt-get install git-lfs && \
     git lfs install
@@ -105,3 +78,39 @@ RUN gem install cf-uaac fpm deb-s3 --no-document
 
 # Add a user for running things as non-superuser
 RUN useradd -ms /bin/bash worker
+
+
+
+
+
+USER root
+RUN apt-get update && apt-get install bzr gcc -y
+
+ENV GOLANG_VERSION 1.17.7
+ENV GOLANG_URL https://buildpacks.cloudfoundry.org/dependencies/go/go_1.17.7_linux_x64_cflinuxfs3_e8cf2ae0.tgz
+ENV GOLANG_SHA256 e8cf2ae04da5a64fd1e7d88e66c533802a9406303148904eb87d188314cf56fb
+
+RUN \
+  mkdir -p /goroot /gopath  && \
+  curl $GOLANG_URL | \
+  tar xvzf - -C /goroot --strip-components=1 && \
+  chown -R worker /goroot /gopath
+
+ENV \
+  GOROOT=/goroot \
+  GOPATH=/gopath \
+  PATH=/goroot/bin:/gopath/bin:$PATH
+
+RUN go get golang.org/x/tools/cmd/cover \
+ && go get golang.org/x/lint/golint \
+ && go get github.com/tools/godep \
+ && go get github.com/laher/goxc \
+ && go get github.com/onsi/ginkgo/ginkgo \
+ && go get github.com/onsi/gomega/... 
+
+
+
+
+
+
+
