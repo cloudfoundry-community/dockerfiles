@@ -24,6 +24,7 @@ RUN apt-get update \
       build-essential \
       bzip2 \
       certstrap \
+      rubygems \
       cf-cli \
       cf6-cli \
       concourse-fly \
