@@ -10,9 +10,9 @@ RUN apt-get update && apt-get install bzr gcc -y
 # go lang to /goroot
 
 # https://golang.org/dl/
-ENV GOLANG_VERSION 1.16.14
-ENV GOLANG_URL https://buildpacks.cloudfoundry.org/dependencies/go/go_1.16.14_linux_x64_cflinuxfs3_8f0f8df5.tgz
-ENV GOLANG_SHA256 8f0f8df599a564a90324dd912dc48a8eb5605383a7affd5bbefdd14e5dff08ff
+ENV GOLANG_VERSION 1.16.15
+ENV GOLANG_URL https://buildpacks.cloudfoundry.org/dependencies/go/go_1.16.15_linux_x64_cflinuxfs3_dc90d19f.tgz
+ENV GOLANG_SHA256 dc90d19f0fd8ed7bc7c8de33be4051793d9bade3eae4fadfa4fac7bb8eaac05e
 RUN \
   mkdir -p /goroot /gopath  && \
   curl $GOLANG_URL | \
