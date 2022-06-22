@@ -1,10 +1,10 @@
-starkandwayne/concourse-go:1.12
+starkandwayne/concourse-go:shield
 ==============================
 
-Task Image for running Concourse Pipelines - Now With Go 1.12!
+Task Image for running Shield Concourse Pipelines - Now With Go 1.17!
 
 This Docker image contains a set of utilities commonly used in
-Concourse pipelines, pre-installed, along with Go 1.12.
+Concourse pipelines, pre-installed, along with Go 1.17.
 
 The `$GOPATH` and `$GOROOT` environment variables will already be
 set for you (to `/gopath` and `/goroot`, respectively).  Likewise,
@@ -19,6 +19,8 @@ The following useful tools are installed by default:
 - [golint][golint] - A linter for Go source code
 - [godep][godep] - Dependency management utility for Go projects
 - [goxc][goxc] - Go cross-compiler
+- [ginko][ginko] - a Go testing framework
+- [gomega][gomega] - a matcher/assertion library
 
 
 
@@ -28,3 +30,5 @@ The following useful tools are installed by default:
 [golint]:  https://github.com/golang/lint
 [godep]:   https://github.com/tools/godep
 [goxc]:    https://github.com/laher/goxc
+[ginko]:   https://onsi.github.io/ginkgo
+[gomega]:  https://onsi.github.io/gomega

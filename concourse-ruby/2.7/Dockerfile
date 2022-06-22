@@ -8,8 +8,8 @@ RUN mkdir -p /usr/local/etc \
 	} >> /usr/local/etc/gemrc
 
 # https://www.ruby-lang.org/en/downloads/
-ENV RUBY_MAJOR 2.4
-ENV RUBY_VERSION 2.4.9
+ENV RUBY_MAJOR 2.7
+ENV RUBY_VERSION 2.7.6
 
 # some of ruby's build scripts are written in ruby
 #   we purge system ruby later to make sure our final image uses what we just built
