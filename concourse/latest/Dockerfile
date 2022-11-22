@@ -1,4 +1,4 @@
-FROM ubuntu
+FROM --platform=linux/amd64 ubuntu
 
 ENV COLUMNS=80
 ENV VAULT_VERSION=1.9.3
@@ -14,23 +14,23 @@ RUN apt-get update \
     && wget -q -O - https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - \
     && echo "deb http://apt.kubernetes.io/ kubernetes-xenial main" | tee -a /etc/apt/sources.list.d/kubernetes.list \
     && apt-get update && apt-get install -yy \
-      autoconf \
-      bosh-cli \
-      build-essential \
-      bzip2 \
+       autoconf \
+       bosh-cli \
+       build-essential \
+       bzip2 \
       certstrap \
       cf-cli \
       cf6-cli \
       concourse-fly \
       credhub-cli \
-      curl \
-      genesis \
-      git \
-      gotcha \
-      hub \
-      file \
-      jq \
-      kubectl \
+       curl \
+       genesis \
+       git \
+       gotcha \
+       hub \
+       file \
+       jq \
+       kubectl \
       libc6 \
       libreadline8 \
       libreadline-dev \
@@ -44,8 +44,8 @@ RUN apt-get update \
       om \
       openssl \
       pivnet-cli \
-      ruby \
-      ruby-dev \
+       ruby \
+       ruby-dev \
       safe \
       sipcalc \
       spruce \
@@ -54,7 +54,7 @@ RUN apt-get update \
       wget \
       unzip \
       zlib1g-dev \
-      zlibc \
+      zlib* \
     && rm -rf /var/lib/apt/lists/*
 
 RUN curl -Lo vault.zip https://releases.hashicorp.com/vault/${VAULT_VERSION}/vault_${VAULT_VERSION}_linux_amd64.zip \
@@ -63,9 +63,14 @@ RUN curl -Lo vault.zip https://releases.hashicorp.com/vault/${VAULT_VERSION}/vau
     && chmod 0755 /usr/bin/vault \
     && rm vault.zip
 
+## Install the SHIELD CLI
+RUN curl -fsSLo shield https://github.com/shieldproject/shield/releases/download/v8.8.4/shield-linux-amd64\
+    && mv shield /usr/bin/shield \ 
+    && chmod 755 /usr/bin/shield 
+
 # Install git-lfs
 RUN curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | bash && \
-    apt-get install git-lfs && \
+    apt-get install -yy git-lfs && \
     git lfs install
 
 # Install Hugo
@@ -73,8 +78,8 @@ RUN curl -L >hugo.tar.gz https://github.com/gohugoio/hugo/releases/download/v0.3
  && tar -xzvf hugo.tar.gz -C /usr/bin \
  && rm hugo.tar.gz
 
-# Rubygems
-RUN gem install cf-uaac fpm deb-s3 --no-document
+# Rubygems 
+RUN gem install cf-uaac -v 4.2.0 --no-document
 
 # Add a user for running things as non-superuser
 RUN useradd -ms /bin/bash worker
