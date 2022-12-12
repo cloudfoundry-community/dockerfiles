@@ -9,7 +9,7 @@ RUN mkdir -p /usr/local/etc \
 
 # https://www.ruby-lang.org/en/downloads/
 ENV RUBY_MAJOR 3.1
-ENV RUBY_VERSION 3.1.2
+ENV RUBY_VERSION 3.1.3
 
 # some of ruby's build scripts are written in ruby
 #   we purge system ruby later to make sure our final image uses what we just built
