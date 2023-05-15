@@ -1,3 +1,4 @@
+.PHONY: concourse go
 
 concourse:
 	docker build -t genesiscommunity/concourse:latest concourse/latest/

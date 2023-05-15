@@ -144,16 +144,17 @@ RUN curl -sOL "https://github.com/github/hub/releases/download/v${HUB_VERSION}/h
     && chmod 0755 /usr/bin/hub
 
 # cf v7
-RUN curl -sL "https://packages.cloudfoundry.org/stable?release=linux64-binary&version=${CF_7_VERSION}&source=github-rel" -o cf7 \
+RUN curl -sL "https://packages.cloudfoundry.org/stable?release=linux64-binary&version=${CF_7_VERSION}&source=github-rel" -o cf-cli_${CF_7_VERSION}_linux_x86-64.tgz  \
+    && tar -xvzf cf-cli_${CF_7_VERSION}_linux_x86-64.tgz \
     && mv cf7 /usr/bin/cf7 \
     && chmod 0755 /usr/bin/cf7
-    #&& tar -xvzf cf-cli_${CF_7_VERSION}_linux_x86-64.tgz \
 
 # cf v8
-RUN curl -sL "https://packages.cloudfoundry.org/stable?release=linux64-binary&version=${CF_8_VERSION}&source=github-rel" -o cf8 \
+RUN curl -sL "https://packages.cloudfoundry.org/stable?release=linux64-binary&version=${CF_8_VERSION}&source=github-rel" -o cf-cli_${CF_8_VERSION}_linux_x86-64.tgz \
+    && tar -xvzf cf-cli_${CF_8_VERSION}_linux_x86-64.tgz \
     && mv cf8 /usr/bin/cf8 \
+    && mv cf /usr/bin/cf \
     && chmod 0755 /usr/bin/cf8
-    #&& tar -xvzf cf-cli_${CF_8_VERSION}_linux_x86-64.tgz \
 
 # uaac
 RUN gem install cf-uaac -v 4.2.0 --no-document
