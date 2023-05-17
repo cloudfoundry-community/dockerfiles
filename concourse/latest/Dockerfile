@@ -3,7 +3,7 @@ FROM --platform=linux/amd64 ubuntu:jammy
 ENV COLUMNS=80
 
 # 1.9.3
-ENV BOSH_CLI_VERSION=${BOSH_CLI_VERSION:-7.2.3}
+ENV BOSH_VERSION=${BOSH_VERSION:-7.2.3}
 ENV CERTSTRAP_VERSION=${CERTSTRAP_VERSION:-1.3.0}
 ENV CF_7_VERSION=${CF_7_VERSION:-7.6.0}
 ENV CF_8_VERSION=${CF_8_VERSION:-8.6.1}
@@ -69,11 +69,11 @@ RUN curl -sOL "https://dl.google.com/go/go${GO_VERSION}.linux-amd64.tar.gz" \
     && chmod -R 777 "$GOPATH"
 
 ## Vault
-RUN curl -sOL "https://releases.hashicorp.com/vault/${VAULT_VERSION}/vault_${VAULT_VERSION}_linux_arm64.zip" \
-    && unzip vault_${VAULT_VERSION}_linux_arm64.zip \
+RUN curl -sOL "https://releases.hashicorp.com/vault/${VAULT_VERSION}/vault_${VAULT_VERSION}_linux_amd64.zip" \
+    && unzip vault_${VAULT_VERSION}_linux_amd64.zip \
     && mv vault /usr/bin/vault \
     && chmod 0755 /usr/bin/vault \
-    && rm vault_${VAULT_VERSION}_linux_arm64.zip
+    && rm vault_${VAULT_VERSION}_linux_amd64.zip
 
 ## safe
 RUN curl -sOL "https://github.com/starkandwayne/safe/releases/download/v${SAFE_VERSION}/safe-linux-amd64" \
@@ -86,8 +86,8 @@ RUN curl -sOL "https://github.com/geofffranks/spruce/releases/download/v${SPRUCE
     && chmod 0755 /usr/bin/spruce
 
 ## bosh
-RUN curl -sOL "https://github.com/cloudfoundry/bosh-cli/releases/download/v${BOSH_CLI_VERSION}/bosh-cli-${BOSH_CLI_VERSION}-linux-amd64" \
-    && mv bosh-cli-${BOSH_CLI_VERSION}-linux-amd64 /usr/bin/bosh \
+RUN curl -sOL "https://github.com/cloudfoundry/bosh-cli/releases/download/v${BOSH_VERSION}/bosh-cli-${BOSH_VERSION}-linux-amd64" \
+    && mv bosh-cli-${BOSH_VERSION}-linux-amd64 /usr/bin/bosh \
     && chmod 0755 /usr/bin/bosh
 
 ## credhub-cli
