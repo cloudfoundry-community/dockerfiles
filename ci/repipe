@@ -1,9 +1,9 @@
 #!/bin/bash
 if [[ -z ${1} ]]; then
-	echo >&2 "USAGE: $0 concourse-target"
+	echo >&2 "USAGE: $0 concourse-target pipelines..."
 	exit 1
 fi
-concourse=${1}
+concourse=${1}; shift
 
 fly_cmd="${FLY_CMD:-fly}"
 
@@ -21,13 +21,16 @@ ifpresent() {
 	done
 }
 
-(cd ${root}/ci && \
+cd ${root}
+[[ $# > 0 ]] || set -- */pipeline.yml */*/pipeline.yml
+
+(cd ${root} && \
  spruce merge \
-        $(ifpresent ../*/pipeline.yml ../*/*/pipeline.yml)  \
-    > .full.yml) || exit 2
+        $(ifpresent ci/pipeline.yml "$@" )  \
+    > ci/.full.yml) || exit 2
 (cd ${root}/ci && \
  spruce merge --prune meta .full.yml \
     > .live.yml) || exit 2
 
 set -x
-$fly_cmd set-pipeline -p docker-images -c ${root}/ci/.live.yml -t ${concourse}
+$fly_cmd set-pipeline -p concourse-dockerimages -c ${root}/ci/.live.yml -t ${concourse}

@@ -1,0 +1,39 @@
+---
+resources:
+  - name: 'concourse_ubuntu_jammy_github'
+    .: (( inject meta.resources.dockerfiles ))
+    source:
+      paths:
+        - concourse/ubuntu-jammy/Dockerfile
+        - concourse/ubuntu-jammy/scripts/*
+
+  - name: 'ubuntu_jammy_version'
+    type: 'registry-image'
+    source:
+      username: ((dockerhub.username))
+      password: ((dockerhub.password))
+      repository: ubuntu
+      variant: jammy
+
+  - name: 'concourse_ubuntu_jammy_dockerhub'
+    .: (( inject meta.resources.dockerhub ))
+    source:
+      repository: (( concat meta.docker.account "/concourse" ))
+      tag: ubuntu-jammy
+
+jobs:
+  - name: 'build-concourse_ubuntu_jammy'
+    public: true
+    plan:
+      - get: git
+        resource: 'concourse_ubuntu_jammy_github'
+        trigger:  true
+      - get: ubuntu_jammy_version
+        resource: ubuntu_jammy_version
+        trigger: true
+        params:
+          skip_download: true
+      - put: 'concourse_ubuntu_jammy_dockerhub'
+        params:
+          build: git/concourse/ubuntu-jammy
+          tag_as_latest: true
