@@ -1,0 +1,52 @@
+---
+meta:
+  dockerhub:
+    account:  ((dockerhub.username))
+    email:    ((dockerhub.email))
+    username: ((dockerhub.username))
+    password: ((dockerhub.password))
+
+  image-registry:
+    account:  ((image-registry.account))
+    username: ((image-registry.username))
+    password: ((image-registry.password))
+    email:    ((image-registry.email))
+
+  github:
+    key:          ((github.private_key))
+    access_token: ((github.access-token))
+
+  git:
+    email: genesis-ci@rubidiumstudios.com
+    name:  Genesis CI Bot
+
+  resources:
+    dockerfiles:
+      type: git
+      source:
+        uri: git@github.com:genesis-community/concourse-dockerfiles
+        branch: main
+        private_key: (( grab meta.github.key ))
+
+    dockerhub:
+      type: registry-image
+      source:
+        username: (( grab meta.dockerhub.username ))
+        password: (( grab meta.dockerhub.password ))
+
+    local-registry:
+      type: docker-image
+      source:
+        email:    (( grab meta.image-registry.email ))
+        username: (( grab meta.image-registry.username ))
+        password: (( grab meta.image-registry.password ))
+
+    github-release:
+      type: github-release
+      source:
+        access_token: (( grab meta.github.access_token ))
+
+    git:
+      type: git
+      source:
+        private_key: (( grab meta.github.key ))

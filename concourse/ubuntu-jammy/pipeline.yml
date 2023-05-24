@@ -1,39 +1,77 @@
 ---
 resources:
-  - name: 'concourse_ubuntu_jammy_github'
+  - name: concourse_ubuntu-jammy-github
     .: (( inject meta.resources.dockerfiles ))
     source:
       paths:
         - concourse/ubuntu-jammy/Dockerfile
         - concourse/ubuntu-jammy/scripts/*
 
-  - name: 'ubuntu_jammy_version'
-    type: 'registry-image'
+  - name: ubuntu-jammy-version
+    .: (( inject meta.resources.dockerhub ))
     source:
-      username: ((dockerhub.username))
-      password: ((dockerhub.password))
       repository: ubuntu
       variant: jammy
 
-  - name: 'concourse_ubuntu_jammy_dockerhub'
-    .: (( inject meta.resources.dockerhub ))
+  - name: concourse_ubuntu-jammy-image
+    .: (( inject meta.resources.local-registry ))
     source:
-      repository: (( concat meta.docker.account "/concourse" ))
+      repository: (( concat meta.image-registry.account "/concourse" ))
       tag: ubuntu-jammy
 
+  - name: concourse_latest-image
+    .: (( inject meta.resources.local-registry ))
+    type: registry-image
+    source:
+      repository: (( concat meta.image-registry.account "/concourse" ))
+      tag: latest
+      email: ((prune))
+
+  - name: concourse_ubuntu-jammy-dockerhub
+    .: (( inject meta.resources.dockerhub ))
+    source:
+      repository: (( concat meta.dockerhub.account "/concourse" ))
+      tag: ubuntu-jammy
+
+  - name: concourse_latest-dockerhub
+    .: (( inject meta.resources.dockerhub ))
+    source:
+      repository: (( concat meta.dockerhub.account "/concourse" ))
+      tag: latest
+
 jobs:
-  - name: 'build-concourse_ubuntu_jammy'
+  - name: build-concourse_ubuntu-jammy
     public: true
     plan:
       - get: git
-        resource: 'concourse_ubuntu_jammy_github'
+        resource: 'concourse_ubuntu-jammy-github'
         trigger:  true
-      - get: ubuntu_jammy_version
-        resource: ubuntu_jammy_version
+      - get: ubuntu-jammy-version
+        resource: ubuntu-jammy-version
         trigger: true
         params:
           skip_download: true
-      - put: 'concourse_ubuntu_jammy_dockerhub'
+      - put: concourse_ubuntu-jammy-image
         params:
           build: git/concourse/ubuntu-jammy
-          tag_as_latest: true
+          tag-as-latest: true
+
+  - name: publish-concourse_ubuntu-jammy
+    public: true
+    plan:
+      - get: image
+        resource: concourse_ubuntu-jammy-image
+        passed: ['build-concourse_ubuntu-jammy']
+        trigger: true
+        params:
+          save: true
+          rootfs: true
+      - put: concourse_latest-image
+        params:
+          image: image/rootfs.tar
+      - put: concourse_ubuntu-jammy-dockerhub
+        params:
+          image: image/rootfs.tar
+      - put: concourse_latest-dockerhub
+        params:
+          image: image/rootfs.tar

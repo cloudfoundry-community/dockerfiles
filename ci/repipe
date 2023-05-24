@@ -26,7 +26,7 @@ cd ${root}
 
 (cd ${root} && \
  spruce merge \
-        $(ifpresent ci/pipeline.yml "$@" )  \
+        $(ifpresent ci/pipeline.yml "$@" ci/settings.yml )  \
     > ci/.full.yml) || exit 2
 (cd ${root}/ci && \
  spruce merge --prune meta .full.yml \
