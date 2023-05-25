@@ -19,7 +19,7 @@ resources:
     source:
       email: ((prune))
       repository: golang
-      tag: 1.20 
+      tag: '1.20'
 
   # Extra tags
   - name: additional-tags
@@ -35,7 +35,7 @@ resources:
       repository: (( concat meta.image-registry.account "/concourse-go" ))
       tag: latest
 
-  - name: concourse_latest-dockerhub
+  - name: concourse-go_latest-dockerhub
     .: (( inject meta.resources.dockerhub ))
     source:
       repository: (( concat meta.dockerhub.account "/concourse-go" ))
@@ -43,27 +43,28 @@ resources:
 
 
 jobs:
-  - name: 'build-concourse-go_1_18'
+  - name: build-concourse-go_1_20
     public: true
     plan:
       - get: additional-tags
 
-      - get: concourse-go_1_20_dockerfile
+      - get: concourse-go_1_20-dockerfile
         trigger: true
 
-      - get: golang-version'
+      - get: golang-version
         trigger: true
+        params: {skip_download: true}
 
       - get: concourse-image
         resource: concourse_ubuntu-jammy-image
         trigger: true
-        passed: ['build-concourse_ubuntu-jammy']
+        passed: [ 'build-concourse_ubuntu-jammy' ]
         params: {skip_download: true}
 
       - put: 'concourse-go_latest-image'
         get_params: {save: true}
         params:
-          build: concourse-go_latest-dockerfile/concourse-go/1.20
+          build: 'concourse-go_1_20-dockerfile/concourse-go/1.20'
           additional_tags: additional-tags/values
 
       - put: concourse-go_latest-dockerhub
