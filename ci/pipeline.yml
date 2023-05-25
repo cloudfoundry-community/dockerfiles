@@ -6,7 +6,6 @@ groups:
   - name: concourse
     jobs:
     - "build-concourse_*"
-    - "publish-concourse_*"
 
 notgroups:
   - name: concourse-go

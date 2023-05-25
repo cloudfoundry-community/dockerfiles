@@ -29,8 +29,9 @@ meta:
         private_key: (( grab meta.github.key ))
 
     dockerhub:
-      type: registry-image
+      type: docker-image
       source:
+        email:    (( grab meta.dockerhub.email ))
         username: (( grab meta.dockerhub.username ))
         password: (( grab meta.dockerhub.password ))
 

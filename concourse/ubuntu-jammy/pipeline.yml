@@ -9,7 +9,9 @@ resources:
 
   - name: ubuntu-jammy-version
     .: (( inject meta.resources.dockerhub ))
+    type: registry-image
     source:
+      email: ((prune))
       repository: ubuntu
       variant: jammy
 
@@ -21,11 +23,10 @@ resources:
 
   - name: concourse_latest-image
     .: (( inject meta.resources.local-registry ))
-    type: registry-image
     source:
       repository: (( concat meta.image-registry.account "/concourse" ))
       tag: latest
-      email: ((prune))
+
 
   - name: concourse_ubuntu-jammy-dockerhub
     .: (( inject meta.resources.dockerhub ))
@@ -52,26 +53,18 @@ jobs:
         params:
           skip_download: true
       - put: concourse_ubuntu-jammy-image
+        get_params: {save: true}
         params:
           build: git/concourse/ubuntu-jammy
-          tag-as-latest: true
 
-  - name: publish-concourse_ubuntu-jammy
-    public: true
-    plan:
-      - get: image
-        resource: concourse_ubuntu-jammy-image
-        passed: ['build-concourse_ubuntu-jammy']
-        trigger: true
-        params:
-          save: true
-          rootfs: true
       - put: concourse_latest-image
         params:
-          image: image/rootfs.tar
+          load: concourse_ubuntu-jammy-image
+
       - put: concourse_ubuntu-jammy-dockerhub
         params:
-          image: image/rootfs.tar
+          load: concourse_ubuntu-jammy-image
+
       - put: concourse_latest-dockerhub
         params:
-          image: image/rootfs.tar
+          load: concourse_ubuntu-jammy-image
