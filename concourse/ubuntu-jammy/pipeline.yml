@@ -1,6 +1,6 @@
 ---
 resources:
-  - name: concourse_ubuntu-jammy-github
+  - name: concourse_ubuntu-jammy-dockerfile
     .: (( inject meta.resources.dockerfiles ))
     source:
       paths:
@@ -44,18 +44,16 @@ jobs:
   - name: build-concourse_ubuntu-jammy
     public: true
     plan:
-      - get: git
-        resource: 'concourse_ubuntu-jammy-github'
+      - get: concourse_ubuntu-jammy-dockerfile
         trigger:  true
       - get: ubuntu-jammy-version
-        resource: ubuntu-jammy-version
         trigger: true
         params:
           skip_download: true
       - put: concourse_ubuntu-jammy-image
         get_params: {save: true}
         params:
-          build: git/concourse/ubuntu-jammy
+          build: concourse_ubuntu-jammy-dockerfile/concourse/ubuntu-jammy
 
       - put: concourse_latest-image
         params:

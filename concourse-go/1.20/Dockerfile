@@ -1,4 +1,5 @@
-FROM --platform=linux/amd64 genesiscommunity/concourse:latest
+ARG BASE_IMAGE=genesiscommunity/concourse:latest
+FROM --platform=linux/amd64 $BASE_IMAGE
 # https://github.com/genesiscommunity/dockerfiles/blob/master/concourse/Dockerfile
 # Dockerfile go build ref:
 # https://github.com/docker-library/golang/blob/5c6fa89055275c8f182ce96af9f5cde8399bdf76/1.20/bullseye/Dockerfile

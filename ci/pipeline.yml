@@ -6,11 +6,11 @@ groups:
   - name: concourse
     jobs:
     - "build-concourse_*"
-
-notgroups:
   - name: concourse-go
     jobs:
     - "build-concourse-go_*"
+
+notgroups:
   - name: concourse-java
     jobs:
     - "build-concourse-java_*"
