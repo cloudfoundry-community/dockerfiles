@@ -60,7 +60,7 @@ RUN set -eux; \
 	esac; \
 	build=; \
 	if [ -z "$url" ]; then \
-# https://github.com/golang/go/issues/38536#issuecomment-616897960
+		# https://github.com/golang/go/issues/38536#issuecomment-616897960 \
 		build=1; \
 		url='https://dl.google.com/go/go1.20.4.src.tar.gz'; \
 		sha256='9f34ace128764b7a3a4b238b805856cc1b2184304df9e5690825b0710f4202d6'; \
@@ -73,9 +73,9 @@ RUN set -eux; \
 	wget -O go.tgz "$url" --progress=dot:giga; \
 	echo "$sha256 *go.tgz" | sha256sum -c -; \
 	\
-# https://github.com/golang/go/issues/14739#issuecomment-324767697
+	# https://github.com/golang/go/issues/14739#issuecomment-324767697 \
 	GNUPGHOME="$(mktemp -d)"; export GNUPGHOME; \
-# https://www.google.com/linuxrepositories/
+	# https://www.google.com/linuxrepositories/ \
 	wget -q -O - https://dl.google.com/linux/linux_signing_key.pub |  gpg --import - ; \
 	gpg --batch --verify go.tgz.asc go.tgz; \
 	gpgconf --kill all; \
@@ -86,7 +86,7 @@ RUN set -eux; \
 	\
 	if [ -n "$build" ]; then \
 		savedAptMark="$(apt-mark showmanual)"; \
-# add backports for newer go version for bootstrap build: https://github.com/golang/go/issues/44505
+		# add backports for newer go version for bootstrap build: https://github.com/golang/go/issues/44505 \
 		( \
 			. /etc/os-release; \
 			echo "deb https://deb.debian.org/debian $VERSION_CODENAME-backports main" > /etc/apt/sources.list.d/backports.list; \
@@ -99,7 +99,7 @@ RUN set -eux; \
 		\
 		( \
 			cd /usr/local/go/src; \
-# set GOROOT_BOOTSTRAP + GOHOST* such that we can build Go successfully
+			# set GOROOT_BOOTSTRAP + GOHOST* such that we can build Go successfully \
 			export GOROOT_BOOTSTRAP="$(go env GOROOT)" GOHOSTOS="$GOOS" GOHOSTARCH="$GOARCH"; \
 			./make.bash; \
 		); \
@@ -109,7 +109,7 @@ RUN set -eux; \
 		apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
 		rm -rf /var/lib/apt/lists/*; \
 		\
-# remove a few intermediate / bootstrapping files the official binary release tarballs do not contain
+		# remove a few intermediate / bootstrapping files the official binary release tarballs do not contain \
 		rm -rf \
 			/usr/local/go/pkg/*/cmd \
 			/usr/local/go/pkg/bootstrap \
@@ -121,11 +121,11 @@ RUN set -eux; \
 		; \
 	fi; \
 	\
-	go version
-
-RUN mkdir -p "$GOPATH/src" "$GOPATH/bin" \
-    && chmod -R 1777 "$GOPATH" \
-    && chown -R worker $GOROOT $GOPATH
+	go version; \
+	\
+	mkdir -p "$GOPATH/src" "$GOPATH/bin"; \
+	chmod -R 1777 "$GOPATH"; \
+	chown -R worker $GOROOT $GOPATH
 
 WORKDIR $GOPATH
 
@@ -135,5 +135,6 @@ RUN go install golang.org/x/tools/cmd/cover@latest \
  && go install github.com/tools/godep@latest \
  && go install github.com/laher/goxc@latest \
  && go install github.com/onsi/ginkgo/ginkgo@latest \
- && go install github.com/onsi/gomega/...@latest
+ && go install github.com/onsi/gomega/...@latest \
+ && go install github.com/mitchellh/gox@latest
 
