@@ -83,7 +83,8 @@ RUN curl -sOL "https://github.com/cloudfoundry/bosh-cli/releases/download/v${BOS
 RUN curl -sOL "https://github.com/cloudfoundry/credhub-cli/releases/download/${CREDHUB_VERSION}/credhub-linux-${CREDHUB_VERSION}.tgz" \
     && tar zxvf credhub-linux-${CREDHUB_VERSION}.tgz \
     && mv credhub /usr/bin/credhub \
-    && chmod 0755 /usr/bin/credhub
+    && chmod 0755 /usr/bin/credhub \
+    && rm credhub-linux-${CREDHUB_VERSION}.tgz
 
 ## genesis
 RUN curl -sOL "https://github.com/genesis-community/genesis/releases/download/v${GENESIS_VERSION}/genesis" \
@@ -130,20 +131,30 @@ RUN v=$(curl -L -s https://dl.k8s.io/release/stable.txt) ; \
 RUN curl -sOL "https://github.com/github/hub/releases/download/v${HUB_VERSION}/hub-linux-amd64-${HUB_VERSION}.tgz" \
     && tar -xvzf hub-linux-amd64-${HUB_VERSION}.tgz \
     && mv hub-linux-amd64-2.14.2/bin/hub /usr/bin/hub \
-    && chmod 0755 /usr/bin/hub
+    && chmod 0755 /usr/bin/hub \
+    && rm hub-linux-amd64-${HUB_VERSION}.tgz
 
 # cf v7
 RUN curl -sL "https://packages.cloudfoundry.org/stable?release=linux64-binary&version=${CF_7_VERSION}&source=github-rel" -o cf-cli_${CF_7_VERSION}_linux_x86-64.tgz  \
     && tar -xvzf cf-cli_${CF_7_VERSION}_linux_x86-64.tgz \
     && mv cf7 /usr/bin/cf7 \
-    && chmod 0755 /usr/bin/cf7
+    && chmod 0755 /usr/bin/cf7 \
+    && rm cf-cli_${CF_7_VERSION}_linux_x86-64.tgz
 
 # cf v8
 RUN curl -sL "https://packages.cloudfoundry.org/stable?release=linux64-binary&version=${CF_8_VERSION}&source=github-rel" -o cf-cli_${CF_8_VERSION}_linux_x86-64.tgz \
     && tar -xvzf cf-cli_${CF_8_VERSION}_linux_x86-64.tgz \
     && mv cf8 /usr/bin/cf8 \
     && mv cf /usr/bin/cf \
-    && chmod 0755 /usr/bin/cf8
+    && chmod 0755 /usr/bin/cf8 \
+    && rm cf-cli_${CF_8_VERSION}_linux_x86-64.tgz
+
+# aws cli
+RUN curl -sL "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
+    && unzip awscliv2.zip \
+    && ./aws/install \
+    && aws --version \
+    && rm awscliv2.zip
 
 # uaac
 RUN gem install cf-uaac -v 4.2.0 --no-document
