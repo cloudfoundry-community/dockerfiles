@@ -153,7 +153,7 @@ RUN curl -sL "https://packages.cloudfoundry.org/stable?release=linux64-binary&ve
 # aws cli
 RUN curl -sL "https://github.com/jhunt/s3/releases/download/v${S3_VERSION}/s3-linux-amd64" -o "s3" \
     && mv s3 /usr/bin/s3 \
-    && chmod 0755 /usr/bin/s3 \
+    && chmod 0755 /usr/bin/s3
 
 # uaac
 RUN gem install cf-uaac -v 4.2.0 --no-document
