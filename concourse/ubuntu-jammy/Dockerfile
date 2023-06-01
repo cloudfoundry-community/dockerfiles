@@ -18,6 +18,7 @@ ENV SHIELD_VERSION=${SHIELD_VERSION:-8.8.4}
 ENV SPRUCE_VERSION=${SPRUCE_VERSION:-1.30.2}
 ENV VAULT_VERSION=${VAULT_VERSION:-1.13.2}
 ENV HUB_VERSION=${HUB_VERSION:-2.14.2}
+ENV S3_VERSION=${S3_VERSION:-0.3.2}
 
 # COLUMNS var added to work around bosh cli needing a terminal size specified
 
@@ -150,11 +151,9 @@ RUN curl -sL "https://packages.cloudfoundry.org/stable?release=linux64-binary&ve
     && rm cf-cli_${CF_8_VERSION}_linux_x86-64.tgz
 
 # aws cli
-RUN curl -sL "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
-    && unzip awscliv2.zip \
-    && ./aws/install \
-    && aws --version \
-    && rm awscliv2.zip
+RUN curl -sL "https://github.com/jhunt/s3/releases/download/v${S3_VERSION}/s3-linux-amd64" -o "s3" \
+    && mv s3 /usr/bin/s3 \
+    && chmod 0755 /usr/bin/s3 \
 
 # uaac
 RUN gem install cf-uaac -v 4.2.0 --no-document
