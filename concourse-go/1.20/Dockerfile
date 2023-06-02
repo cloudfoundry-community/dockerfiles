@@ -135,6 +135,5 @@ RUN go install golang.org/x/tools/cmd/cover@latest \
  && go install github.com/tools/godep@latest \
  && go install github.com/laher/goxc@latest \
  && go install github.com/onsi/ginkgo/ginkgo@latest \
- && go install github.com/onsi/gomega/...@latest \
- && go install github.com/mitchellh/gox@latest
+ && go install github.com/onsi/gomega/...@latest
 
