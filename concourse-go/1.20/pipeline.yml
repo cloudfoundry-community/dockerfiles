@@ -25,8 +25,7 @@ resources:
   - name: additional-tags
     type: static
     source: 
-      values: "v1.20-ubuntu-jammy v1.20"
-  
+      values: "1.20 1.20-ubuntu-jammy"
 
   # Build outputs
   - name: concourse-go_latest-image
