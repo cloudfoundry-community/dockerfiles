@@ -1,5 +1,11 @@
 ---
+resource_types:
+- name: static
+  type: docker-image
+  source: { repository: ktchen14/static-resource }
+
 resources:
+  # Dockerfile source
   - name: concourse_ubuntu-jammy-dockerfile
     .: (( inject meta.resources.dockerfiles ))
     source:
@@ -7,6 +13,7 @@ resources:
         - concourse/ubuntu-jammy/Dockerfile
         - concourse/ubuntu-jammy/scripts/*
 
+  # Trigger for new version of ubuntu-jammy
   - name: ubuntu-jammy-version
     .: (( inject meta.resources.dockerhub ))
     type: registry-image
@@ -15,18 +22,18 @@ resources:
       repository: ubuntu
       variant: jammy
 
+  # Extra tags
+  - name: additional-tags
+    type: static
+    source: 
+      values: "latest"
+
+  # Build outputs
   - name: concourse_ubuntu-jammy-image
     .: (( inject meta.resources.local-registry ))
     source:
       repository: (( concat meta.image-registry.account "/concourse" ))
       tag: ubuntu-jammy
-
-  - name: concourse_latest-image
-    .: (( inject meta.resources.local-registry ))
-    source:
-      repository: (( concat meta.image-registry.account "/concourse" ))
-      tag: latest
-
 
   - name: concourse_ubuntu-jammy-dockerhub
     .: (( inject meta.resources.dockerhub ))
@@ -34,35 +41,28 @@ resources:
       repository: (( concat meta.dockerhub.account "/concourse" ))
       tag: ubuntu-jammy
 
-  - name: concourse_latest-dockerhub
-    .: (( inject meta.resources.dockerhub ))
-    source:
-      repository: (( concat meta.dockerhub.account "/concourse" ))
-      tag: latest
 
 jobs:
   - name: build-concourse_ubuntu-jammy
     public: true
     plan:
+      - get: additional-tags
+
       - get: concourse_ubuntu-jammy-dockerfile
         trigger:  true
+
       - get: ubuntu-jammy-version
         trigger: true
-        params:
-          skip_download: true
+        params: {skip_download: true}
+
       - put: concourse_ubuntu-jammy-image
         get_params: {save: true}
         params:
           build: concourse_ubuntu-jammy-dockerfile/concourse/ubuntu-jammy
-
-      - put: concourse_latest-image
-        params:
-          load: concourse_ubuntu-jammy-image
+          additional_tags: additional-tags/values
 
       - put: concourse_ubuntu-jammy-dockerhub
         params:
           load: concourse_ubuntu-jammy-image
+          additional_tags: additional-tags/values
 
-      - put: concourse_latest-dockerhub
-        params:
-          load: concourse_ubuntu-jammy-image
