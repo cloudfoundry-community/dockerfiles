@@ -23,7 +23,7 @@ resources:
       variant: jammy
 
   # Extra tags
-  - name: additional-tags
+  - name: concourse-ubuntu-jammy-additional-tags
     type: static
     source: 
       values: "latest"
@@ -47,6 +47,7 @@ jobs:
     public: true
     plan:
       - get: additional-tags
+        resource: concourse-ubuntu-jammy-additional-tags
 
       - get: concourse_ubuntu-jammy-dockerfile
         trigger:  true
