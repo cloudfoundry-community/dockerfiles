@@ -18,6 +18,7 @@ RUN set -eux; apt-get update; apt-get install -y --no-install-recommends \
 		libc6-dev \
 		make \
 		pkg-config \
+		node npm \
 	; rm -rf /var/lib/apt/lists/*
 
 ENV PATH /usr/local/go/bin:$PATH
