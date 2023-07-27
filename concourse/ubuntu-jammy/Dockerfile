@@ -7,16 +7,15 @@ ENV BOSH_VERSION=${BOSH_VERSION:-7.2.3}
 ENV CERTSTRAP_VERSION=${CERTSTRAP_VERSION:-1.3.0}
 ENV CF_7_VERSION=${CF_7_VERSION:-7.6.0}
 ENV CF_8_VERSION=${CF_8_VERSION:-8.6.1}
-ENV CREDHUB_VERSION=${CREDHUB_VERSION:-2.9.15}
-ENV GENESIS_VERSION=${GENESIS_VERSION:-2.8.9}
+ENV CREDHUB_VERSION=${CREDHUB_VERSION:-2.9.18}
+ENV GENESIS_VERSION=${GENESIS_VERSION:-2.8.10}
 ENV GOTCHA_VERSION=${GOTCHA_VERSION:-0.2.0}
-ENV GO_VERSION=${GO_VERSION:-1.20.4}
 ENV HUGO_VERSION=${HUGO_VERSION:-0.36}
 ENV JQ_VERSION=${JQ_VERSION:-1.6}
-ENV SAFE_VERSION=${SAFE_VERSION:-1.8.0}
+ENV SAFE_VERSION=${SAFE_VERSION:-1.9.0}
 ENV SHIELD_VERSION=${SHIELD_VERSION:-8.8.4}
 ENV SPRUCE_VERSION=${SPRUCE_VERSION:-1.30.2}
-ENV VAULT_VERSION=${VAULT_VERSION:-1.13.2}
+ENV VAULT_VERSION=${VAULT_VERSION:-1.14.0}
 ENV HUB_VERSION=${HUB_VERSION:-2.14.2}
 ENV S3_VERSION=${S3_VERSION:-0.3.2}
 
@@ -44,7 +43,6 @@ RUN apt-get update \
                    libxslt1-dev \
                    libyaml-dev \
                    lsof \
-                   neovim \
                    openssl \
                    ruby \
                    ruby-dev \
@@ -52,6 +50,7 @@ RUN apt-get update \
                    sqlite3 \
                    tig \
                    unzip \
+                   vim \
                    vim-common \
                    wget \
                    zlib* \
