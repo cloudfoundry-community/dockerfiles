@@ -65,8 +65,8 @@ RUN curl -sOL "https://releases.hashicorp.com/vault/${VAULT_VERSION}/vault_${VAU
     && rm vault_${VAULT_VERSION}_linux_amd64.zip
 
 ## safe
-RUN curl -sOL "https://github.com/starkandwayne/safe/releases/download/v${SAFE_VERSION}/safe-linux-amd64" \
-    && mv safe-linux-amd64 /usr/bin/safe \
+RUN curl -sOL "https://github.com/cloudfoundry-community/safe/releases/download/v${SAFE_VERSION}/safe-${SAFE_VERSION}-linux-amd64" \
+    && mv safe-${SAFE_VERSION}-linux-amd64 /usr/bin/safe \
     && chmod 0755 /usr/bin/safe
 
 ## Spruce
